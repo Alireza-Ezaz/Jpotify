@@ -6,12 +6,16 @@ import javax.swing.*;
 public class Song {
     private String name;
     private String directory;
-    private String artist;
-    private String album;
+    private Artist artist;
+    private String albumName;
     private ImageIcon artWork;
 
     public Song(String directory) {
         this.directory = directory;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public String getName() {
@@ -22,11 +26,11 @@ public class Song {
         return directory;
     }
 
-    public String getAlbum() {
-        return album;
+    public String getAlbumName() {
+        return albumName;
     }
 
-    public String getArtist() {
+    public Artist getArtist() {
         return artist;
     }
 
@@ -36,6 +40,6 @@ public class Song {
 
     @Override
     public String toString() {
-        return "Name: " + name + "\nDirectory: " + directory + "\nArtist: " + artist + "\nAlbum: " + album;
+        return "Name: " + name + "\nDirectory: " + directory + "\nArtist: " + artist.getName() + "\nAlbum: " + albumName;
     }
 }
