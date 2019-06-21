@@ -3,13 +3,12 @@ package Logic;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class PlayList {
-    private String name;
-    private ImageIcon imageIcon;
-    private ArrayList<Song> songs;
+public class PlayList extends CollectionOfSongs {
 
-    public PlayList(ArrayList<Song> songs) {
-        this.songs = songs;
+
+    public PlayList(String name,ImageIcon imageIcon) {
+        super(name,imageIcon);
+
     }
 
 
