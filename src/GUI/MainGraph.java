@@ -92,6 +92,8 @@ public class MainGraph {
         myFrame.add(eastPanel, BorderLayout.EAST);
 
         /////////South panel
+
+        //Player Panel in southpanel
         JPanel southPanel = new JPanel(new BorderLayout());
         JPanel playerPanel = new JPanel(new FlowLayout());
         Dimension playerPanelSize = new Dimension(150, 100);
@@ -136,13 +138,30 @@ public class MainGraph {
         playerPanel.setBackground(Color.lightGray);
         southPanel.add(playerPanel, BorderLayout.WEST);
 
+        //Song slider
+        JSlider musicSlider = new JSlider();
+        Dimension musicSliderDim = new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 300,30);
+        southPanel.add(musicSlider, BorderLayout.CENTER);
+
+        //Volume slider
+        //JPanel speakers = new JPanel(new FlowLayout());
+        //speakers.setPreferredSize(playerPanelSize);
+        //JLabel volume = new JLabel("Volume");
+        //Dimension voloumLabelDim = new Dimension(50,30);
+        //volume.setPreferredSize(voloumLabelDim);
+        JSlider voloum = new JSlider();
+        Dimension voloumDim = new Dimension(150,30);
+        voloum.setPreferredSize(voloumDim);
+//        speakers.add(volume);
+//        speakers.add(voloum);
+        southPanel.add(voloum, BorderLayout.EAST);
 
         Dimension southPanelDim = new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 100);
         southPanel.setBackground(Color.lightGray);
         myFrame.add(southPanel, BorderLayout.SOUTH);
 
 
-        // north
+        // North
         JPanel northPanel = new JPanel(new FlowLayout());
         Dimension northPanelDim = new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 30);
         northPanel.setPreferredSize(northPanelDim);
