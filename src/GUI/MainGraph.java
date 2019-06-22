@@ -1,9 +1,10 @@
+package GUI;
+
 import javax.imageio.ImageIO;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class MainGraph {
     JFrame myFrame;
@@ -14,34 +15,59 @@ public class MainGraph {
         myFrame.setLayout(new BorderLayout());
 
         //left panel
+        JPanel leftPanel = new JPanel(new FlowLayout());
+        Dimension leftPanelDim = new Dimension(150, Toolkit.getDefaultToolkit().getScreenSize().height);
+        leftPanel.setPreferredSize(leftPanelDim);
+
         DefaultListModel listModelLibrary = new DefaultListModel();
         listModelLibrary.addElement("Music");
         listModelLibrary.addElement("Album");
         listModelLibrary.addElement("Artist");
         JList libraryList = new JList(listModelLibrary);
+//        JScrollPane scrollPane = new JScrollPane();
+//        scrollPane.setViewportView(libraryList);
+//        libraryList.setLayoutOrientation(JList.VERTICAL);
 
-        DefaultListModel listModelplaylist= new DefaultListModel();//list of your all playlist
+
+        DefaultListModel listModelplaylist = new DefaultListModel();//list of your all playlist
         JList playlistList = new JList(listModelplaylist);
 
-        JPanel leftPanel = new JPanel(new GridLayout(5, 1));
-        leftPanel.add(new JLabel("Library"));
+        Dimension libListdim = new Dimension(150, 70);
+        Dimension playlisListdim = new Dimension(150, 150);
+        libraryList.setPreferredSize(libListdim);
+        playlistList.setPreferredSize(playlisListdim);
+
+        JLabel library = new JLabel("Library");
+        Dimension LabelSize = new Dimension(150, 20);
+        library.setPreferredSize(LabelSize);
+
+        JLabel playlistListLabel = new JLabel("Playlist");
+        playlistListLabel.setPreferredSize(LabelSize);
+
+        leftPanel.add(library);
         leftPanel.add(libraryList);
-        leftPanel.add(new JLabel("Playlist    "));
+        //leftPanel.add(spane);
+        leftPanel.add(playlistListLabel);
         leftPanel.add(playlistList);
+
         JButton artworkP = new JButton();
+        artworkP.setBackground(Color.lightGray);
         try {
-//            Image img = ImageIO.read(getClass().getResource("artwork.jpg"));//didnt work?!
-//            artworkP.setIcon(new ImageIcon(img));
-            BufferedImage img  =ImageIO.read(getClass().getResource("artwork.jpg"));
-            BufferedImage fimg = new BufferedImage(150, 150,img.getType());
-            artworkP.setIcon(new ImageIcon(fimg));
+            BufferedImage img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.jpg"));
+            BufferedImage fimg = new BufferedImage(150, 150, img.getType());
+            artworkP.setIcon(new ImageIcon(img));
 
         } catch (Exception ex) {
             System.out.println("Image not found");
         }
+        Dimension artworkMaxDim = new Dimension(150, 150);
+        artworkP.setPreferredSize(artworkMaxDim);
         leftPanel.add(artworkP);
+
         leftPanel.setBackground(Color.LIGHT_GRAY);
         myFrame.add(leftPanel, BorderLayout.WEST);
+
+
 
         //Center panel
         JPanel centerPanel = new JPanel(new GridLayout(1, 1));
@@ -56,26 +82,26 @@ public class MainGraph {
 
         //South panel
         JPanel southPanel = new JPanel(new BorderLayout());
-          // west southpanel
-        JPanel musicinfo = new JPanel(new GridLayout(2,1));
-        JLabel musicName =new JLabel(" Music ");
+        // west southpanel
+        JPanel musicinfo = new JPanel(new GridLayout(2, 1));
+        JLabel musicName = new JLabel("  Music  ");
         JLabel artist = new JLabel("  Artist  ");
         musicinfo.add(musicName);
         musicinfo.add(artist);
         musicinfo.setBackground(Color.lightGray);
         southPanel.add(musicinfo, BorderLayout.WEST);
-          //east sothpanel
+        //east sothpanel
         JSlider voloum = new JSlider();
         southPanel.add(voloum, BorderLayout.EAST);
-          //south southpanel
+        //south southpanel
         JSlider musicSlider = new JSlider();
         southPanel.add(musicSlider, BorderLayout.SOUTH);
-          // Center soutpanel
-        JPanel player =new JPanel(new GridLayout(1,3));
-        JButton play= new JButton();
+        // Center soutpanel
+        JPanel player = new JPanel(new GridLayout(1, 3));
+        JButton play = new JButton();
         play.setBackground(Color.lightGray);
         try {
-            Image img = ImageIO.read(getClass().getResource("pause.png"));//didnt work?!
+            Image img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\pause.png"));//didnt work?!
             play.setIcon(new ImageIcon(img));
 
         } catch (Exception ex) {
@@ -85,7 +111,7 @@ public class MainGraph {
         JButton next = new JButton();
         next.setBackground(Color.lightGray);
         try {
-            Image img = ImageIO.read(getClass().getResource("next.png"));//didnt work?!
+            Image img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\next.png"));//didnt work?!
             next.setIcon(new ImageIcon(img));
 
         } catch (Exception ex) {
@@ -95,7 +121,7 @@ public class MainGraph {
         JButton privios = new JButton();
         privios.setBackground(Color.lightGray);
         try {
-            Image img = ImageIO.read(getClass().getResource("pr.png"));//didnt work?!
+            Image img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\pr.png"));//didnt work?!
             privios.setIcon(new ImageIcon(img));
 
         } catch (Exception ex) {
@@ -120,12 +146,11 @@ public class MainGraph {
         myFrame.add(northPanel, BorderLayout.NORTH);
 
 
-
-
-
         ///////////
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        myFrame.setMaximumSize(dimension);
+        Dimension max_dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension min_dimension = new Dimension(1500, 1200);
+        myFrame.setMinimumSize(min_dimension);
+        myFrame.setMaximumSize(max_dimension);
         myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         myFrame.setVisible(true);
 
