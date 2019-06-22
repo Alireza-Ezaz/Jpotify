@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Album extends CollectionOfSongs {
-    private Artist artist;
+    private String artistName;
 
 
-    public Album(String name, ImageIcon imageIcon) {
-        super(name, imageIcon);
+    public Album(String artistName, ImageIcon imageIcon) {
+        super(artistName, imageIcon);
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setArtist(String artist) {
+        this.artistName = artist;
     }
 
     @Override
     public String toString() {
-        return super.toString() + "Artist: " + artist.getName();
+        return super.toString() + "Artist: " + artistName;
     }
 }
