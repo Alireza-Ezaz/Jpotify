@@ -1,6 +1,8 @@
 package GUI;
 
+import GUI.Listener.addMusicToLibListener;
 import GUI.Listener.darkModeListener;
+import Logic.Library;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class MainGraph {
+    private Library library;
     private JFrame myFrame;
     private ArrayList<Object> centerPanelArrayList;
     private ArrayList<Object> eastPanelArrayList;
@@ -34,19 +37,6 @@ public class MainGraph {
         return dimension;
     }
 
-    private void centerPanel() {
-        JPanel centerPanel = new JPanel(new FlowLayout());
-        centerPanelArrayList.add(centerPanel);
-        centerPanel.setBackground(Color.GRAY);
-
-        JPanel recentlyPlayed = new JPanel();
-        centerPanelArrayList.add(recentlyPlayed);
-
-        recentlyPlayed.setPreferredSize(dimensionCreator(Toolkit.getDefaultToolkit().getScreenSize().width, 150));
-        recentlyPlayed.setBackground(Color.lightGray);
-
-        myFrame.add(centerPanel, BorderLayout.CENTER);
-    }
 
     private void eastPanel() {
         JPanel eastPanel = new JPanel(new FlowLayout());
@@ -61,43 +51,55 @@ public class MainGraph {
         myFrame.add(eastPanel, BorderLayout.EAST);
     }
 
-    private void northPanel() {
-        JPanel northPanel = new JPanel(new FlowLayout());
-        northPanelArrayList.add(northPanel);
+    private void centerPanel() {
+        JPanel centerPanel = new JPanel(new FlowLayout());
+        centerPanelArrayList.add(centerPanel);
+        centerPanel.setBackground(Color.GRAY);
 
-        northPanel.setPreferredSize(dimensionCreator(Toolkit.getDefaultToolkit().getScreenSize().width, 30));
-        JLabel add_music_to_libraryLabel = new JLabel("Add Music To Library");
-        northPanelArrayList.add(add_music_to_libraryLabel);
+        JPanel menuBar = new JPanel(new FlowLayout());
+        centerPanelArrayList.add(menuBar);
+        menuBar.setPreferredSize(dimensionCreator(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 50));
 
-        add_music_to_libraryLabel.setPreferredSize(dimensionCreator(150, 30));
-        northPanel.add(add_music_to_libraryLabel);
-        JButton add = new JButton(" + ");
-        northPanelArrayList.add(add);
 
-        add.setPreferredSize(dimensionCreator(60, 30));
-        add.setBackground(Color.lightGray);
-        northPanel.add(add);
-        northPanel.setBackground(Color.lightGray);
-        myFrame.add(northPanel, BorderLayout.NORTH);
+        JButton add = new JButton(" +  Add Music To Library");
+        centerPanelArrayList.add(add);
+        add.addActionListener(new addMusicToLibListener(library));
+
+        add.setPreferredSize(dimensionCreator(200, 30));
+        add.setBackground(Color.gray);
+        menuBar.add(add);
+        menuBar.setBackground(Color.gray);
         JButton signIn = new JButton("Sign in");
-        northPanelArrayList.add(signIn);
+        centerPanelArrayList.add(signIn);
 
         signIn.setPreferredSize(dimensionCreator(150, 30));
-        signIn.setBackground(Color.lightGray);
-        northPanel.add(signIn);
+        signIn.setBackground(Color.gray);
+        menuBar.add(signIn);
         JLabel profileIcon = new JLabel();
-        northPanelArrayList.add(profileIcon);
+        centerPanelArrayList.add(profileIcon);
 
-        profileIcon.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\profile.jpg"));
-        profileIcon.setPreferredSize(dimensionCreator(60, 30));
-        northPanel.add(profileIcon);
+        profileIcon.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\profile.png"));
+        profileIcon.setPreferredSize(dimensionCreator(30, 30));
+        menuBar.add(profileIcon);
         JCheckBox darkMode = new JCheckBox("Dark Mode", false);
-        northPanelArrayList.add(darkMode);
+        centerPanelArrayList.add(darkMode);
         darkMode.addActionListener(new darkModeListener(myFrame, centerPanelArrayList, eastPanelArrayList, northPanelArrayList, southPanelArrayList, leftPanelArrayList));
         darkMode.setPreferredSize(dimensionCreator(150, 30));
-        darkMode.setBackground(Color.lightGray);
-        northPanel.add(darkMode);
+        darkMode.setBackground(Color.gray);
+        menuBar.add(darkMode);
+        centerPanel.add(menuBar);
+
+
+        /////////////////////////////
+        JPanel recentlyPlayed = new JPanel();
+        centerPanelArrayList.add(recentlyPlayed);
+
+        recentlyPlayed.setPreferredSize(dimensionCreator(Toolkit.getDefaultToolkit().getScreenSize().width, 150));
+        recentlyPlayed.setBackground(Color.lightGray);
+
+        myFrame.add(centerPanel, BorderLayout.CENTER);
     }
+
 
     public void southPanel() {
         //Player Panel in southpanel
@@ -110,7 +112,7 @@ public class MainGraph {
         southPanelArrayList.add(play);
         play.setPreferredSize(dimensionCreator(44, 44));
         play.setBackground(Color.lightGray);
-        play.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\pause.png"));
+        play.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\play.png"));
         JButton pNext = new JButton();
         southPanelArrayList.add(pNext);
         pNext.setPreferredSize(dimensionCreator(44, 44));
@@ -120,7 +122,7 @@ public class MainGraph {
         southPanelArrayList.add(privios);
         privios.setPreferredSize(dimensionCreator(44, 44));
         privios.setBackground(Color.lightGray);
-        privios.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\pr.png"));
+        privios.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\pri.png"));
         playerPanel.add(privios);
         playerPanel.add(play);
         playerPanel.add(pNext);
@@ -166,6 +168,7 @@ public class MainGraph {
         playlistList.setPreferredSize(dimensionCreator(150, 300));
 
         JLabel library = new JLabel("Library");
+        //library.setFont(new Font(""));
         leftPanelArrayList.add(library);
         library.setPreferredSize(dimensionCreator(150, 20));
 
@@ -182,7 +185,7 @@ public class MainGraph {
         JButton artworkP = new JButton();
         leftPanelArrayList.add(artworkP);
         artworkP.setBackground(Color.lightGray);
-        artworkP.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.jpg"));
+        artworkP.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png"));
         artworkP.setPreferredSize(dimensionCreator(150, 150));
         leftPanel.add(artworkP);
 
@@ -194,20 +197,33 @@ public class MainGraph {
         artist.setPreferredSize(dimensionCreator(150, 20));
         leftPanel.add(musicName);
         leftPanel.add(artist);
-        JCheckBox favorite = new JCheckBox("Favorite");
+//        JCheckBox favorite = new JCheckBox("Favorite");
+//        leftPanelArrayList.add(favorite);
+//        favorite.setPreferredSize(dimensionCreator(150, 30));
+//        favorite.setBackground(Color.lightGray);
+//        leftPanel.add(favorite);
+        JButton favorite = new JButton();
+        favorite.setPreferredSize(dimensionCreator(150, 50));
+        favorite.setIcon(imageCreator("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\unFavorite.png"));
         leftPanelArrayList.add(favorite);
-        favorite.setPreferredSize(dimensionCreator(150, 30));
         favorite.setBackground(Color.lightGray);
         leftPanel.add(favorite);
 
 
         leftPanel.setBackground(Color.LIGHT_GRAY);
         myFrame.add(leftPanel, BorderLayout.WEST);
+        JButton newPlaylist = new JButton("+   New Playlist");
+        leftPanelArrayList.add(newPlaylist);
+        newPlaylist.setBackground(Color.lightGray);
+        newPlaylist.setPreferredSize(dimensionCreator(150, 50));
+        leftPanel.add(newPlaylist);
+
 
     }
 
 
-    public MainGraph() {
+    public MainGraph(Library library) {
+        this.library = library;
         myFrame = new JFrame("Jpotify");
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         myFrame.setLayout(new BorderLayout());
@@ -230,19 +246,20 @@ public class MainGraph {
         southPanel();
 
         //North panel
-        northPanel();
+        //northPanel();
 
         ///////////
         //System.out.println("width: " + Toolkit.getDefaultToolkit().getScreenSize().width + "Height :" + Toolkit.getDefaultToolkit().getScreenSize().height);
         myFrame.setMinimumSize(dimensionCreator(1500, 1200));
         myFrame.setMaximumSize(dimensionCreator(1440, 960));
-        if (Toolkit.getDefaultToolkit().getScreenSize().width < 1500)
-            myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //if (Toolkit.getDefaultToolkit().getScreenSize().width < 1500)
+        myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         myFrame.setVisible(true);
 
     }
 
     public static void main(String[] args) {
-        MainGraph mainGraph = new MainGraph();
+        Library lib = new Library();
+        MainGraph mainGraph = new MainGraph(lib);
     }
 }
