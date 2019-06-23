@@ -1,15 +1,12 @@
 package Logic.Player;
 
-import Logic.Song;
+import Logic.Entities.Song;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.*;
 
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class MP3Player implements Runnable {
     private AdvancedPlayer player = null;
