@@ -1,17 +1,17 @@
-package Logic;
+package Logic.Entities;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class CollectionOfSongs {
     private String name;
-    private ImageIcon imageIcon;
+    private ImageIcon imageIcon = null;
     private ArrayList<Song> songs;
 
-    public CollectionOfSongs(String name,ImageIcon imageIcon) {
+    public CollectionOfSongs(String name) {
         songs = new ArrayList<Song>();
         this.name = name;
-        this.imageIcon  = imageIcon;
+        //this.imageIcon  = imageIcon;
     }
 
     public String getName() {

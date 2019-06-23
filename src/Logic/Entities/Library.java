@@ -1,5 +1,6 @@
-package Logic;
+package Logic.Entities;
 
+import Logic.Player.MP3Player;
 import com.mpatric.mp3agic.*;
 
 
@@ -7,18 +8,23 @@ import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class Library {
     private final String name = "MYMUSICS";
     private static int numberOfSongs = 0;
     private ArrayList<Song> songs;
-    private ArrayList<Album> albums;
-    private ArrayList<Artist> artists;
-
     private HashMap<String, ArrayList<Song>> albumsSongs;
-    private HashMap<String, ArrayList<Song>> playListsSongs;
     private HashMap<String, ArrayList<Song>> artistsSongs;
+
+
+    public Library() {
+        songs = new ArrayList<Song>();
+
+        albumsSongs = new HashMap<String, ArrayList<Song>>();
+        artistsSongs = new HashMap<String, ArrayList<Song>>();
+    }
 
     public static void setNumberOfSongs(int numberOfSongs) {
         Library.numberOfSongs = numberOfSongs;
@@ -35,19 +41,11 @@ public class Library {
         Song song = findSong(songDirectory);
         if (!songs.contains(song)) {
             songs.add(song);
-            if (albumsSongs.containsKey(song.getAlbumName())) {
-                albumsSongs.get(song.getAlbumName()).add(song);
-            } else {
-                Album tempAlbum = new Album(song.getAlbumName(), song.getArtWork());
-                tempAlbum.setArtist(song.getArtistName());
-                tempAlbum.addSong(song);
-                albumsSongs.put(song.getAlbumName(), tempAlbum.getSongs());
-                albums.add(tempAlbum);
-                tempAlbum = null;
-            }
-
+            classifySongs();
         } else
             System.out.println("Already added");
+
+        //when a new music is added to a library numberOfSongs increases by 1
         numberOfSongs++;
     }
 
@@ -77,7 +75,9 @@ public class Library {
             Mp3File mp3file = new Mp3File(directory);
             ID3v2 id3v2Tag = mp3file.getId3v2Tag();
             byte[] albumImageData = id3v2Tag.getAlbumImage();
-            song.setArtWork(new ImageIcon(albumImageData));
+            //All files do not have image icon;
+            if (albumImageData != null)
+                song.setArtWork(new ImageIcon(albumImageData));
 
 
         } catch (FileNotFoundException e) {
@@ -92,6 +92,123 @@ public class Library {
 
         return song;
     }
+
+    /**
+     * This method classifies the songs and add them to hashMaps in the fields
+     */
+    private void classifySongs() {
+        for (Song song : songs) {
+            if (albumsSongs.containsKey(song.getAlbumName())) {
+                albumsSongs.get(song.getAlbumName()).add(song);
+            }
+            if (!albumsSongs.containsKey(song.getAlbumName()) && song.getAlbumName().trim().length() != 0) {
+                Album album = new Album(song.getArtistName(), song.getArtWork());
+                album.addSong(song);
+                albumsSongs.put(song.getAlbumName(), album.getSongs());
+            }
+
+            if (artistsSongs.containsKey(song.getArtistName())) {
+                artistsSongs.get(song.getArtistName()).add(song);
+            }
+            if (!artistsSongs.containsKey(song.getArtistName())) {
+                Artist artist = new Artist(song.getArtistName());
+                artist.addSong(song);
+                artistsSongs.put(song.getArtistName(), artist.getSongs());
+            }
+
+
+        }
+
+    }
+
+    /**
+     * This method save the songs in a bin file in order to load them later
+     */
+    public void saveLibrarySongs() {
+        try {
+
+            FileOutputStream fileOutputStream = new FileOutputStream("AllSongs.bin", false);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(numberOfSongs);
+            objectOutputStream.writeObject(songs);
+            objectOutputStream.close();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * This method loads the songs
+     */
+    public void loadSongs() {
+        try {
+            FileInputStream fileInputStream = new FileInputStream("AllSongs.bin");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            numberOfSongs = (int) objectInputStream.readObject();
+            songs = (ArrayList<Song>) objectInputStream.readObject();
+
+            classifySongs();
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        String str = "<< All Songs >>\n\n";
+        for (Song song : songs) {
+            str = str.concat(song.toString()) + "\n\n";
+
+        }
+        return str;
+    }
+   /* public void printAlbumSongs(){
+        for(Map.Entry<String,ArrayList<Song>> entry:artistsSongs.entrySet()){
+            System.out.println(entry.getKey());
+            ArrayList<Song> songs = entry.getValue();
+            for(Song song: songs)
+                System.out.println(song);
+        }
+    }*/
+
+  /*  public static void main(String[] args) {
+        Library library = new Library();
+        PlaylistLibrary playlistLibrary = new PlaylistLibrary();
+        playlistLibrary.createPlayList("Ezaz");
+        playlistLibrary.addSongToSpecificPlayList("Ezaz",library.songs.get(0));
+
+        library.loadSongs();
+        library.classifySongs();
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\1.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\2.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\3.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\4.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\5.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\6.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\7.mp3");
+        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\8.mp3");
+        library.saveLibrarySongs();
+
+        System.out.println("Number of songs: " + numberOfSongs);
+
+
+        System.out.println(library);
+        MP3Player mp3Player = new MP3Player(library.songs.get(0));
+        Thread t = new Thread(mp3Player);
+        t.start();
+
+
+    }*/
 
 
 }

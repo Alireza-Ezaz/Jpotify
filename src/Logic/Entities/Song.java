@@ -1,15 +1,16 @@
-package Logic;
+package Logic.Entities;
 
 import javax.swing.*;
+import java.io.Serializable;
 
 
-public class Song {
+public class Song implements Serializable {
     private String name;
     private String directory;
     private String artistName;
     private String albumName;
-    private String lyric ="not downloaded";
-    private ImageIcon artWork;
+    private String lyric = "not downloaded";
+    private ImageIcon artWork = null;
 
     public Song(String directory) {
         this.directory = directory;
@@ -61,6 +62,24 @@ public class Song {
 
     @Override
     public String toString() {
-        return "Name: " + name + "\nDirectory: " + directory + "\nArtist: " + artistName + "\nAlbum: " + albumName;
+        return "Name: " + name + "\nDirectory: " + directory + "\nArtist: " + artistName + "\nAlbum: " + albumName + "\n";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Song))
+            return false;
+        Song other = (Song) obj;
+        return name.equals(other.name) && directory.equals(other.directory);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 37 * result + name.hashCode();
+        result = 37 * result + directory.hashCode();
+        return result;
     }
 }

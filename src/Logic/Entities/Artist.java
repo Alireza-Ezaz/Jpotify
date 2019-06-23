@@ -1,4 +1,4 @@
-package Logic;
+package Logic.Entities;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,7 @@ public class Artist {
 
     public Artist(String name) {
         this.name = name;
+        songs = new ArrayList<Song>();
     }
     /**
      * addSong add a song to Arraylist of songs

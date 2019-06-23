@@ -1,15 +1,13 @@
-package Logic;
+package Logic.Entities;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Album extends CollectionOfSongs {
     private String artistName;
 
 
     public Album(String artistName, ImageIcon imageIcon) {
-        super(artistName, imageIcon);
+        super(artistName);
     }
 
     public void setArtist(String artist) {
