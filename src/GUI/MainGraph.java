@@ -1,12 +1,12 @@
+package GUI;
 import javax.imageio.ImageIO;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+
 public class MainGraph {
-    JFrame myFrame;
+    private JFrame myFrame;
 
     public MainGraph() {
         myFrame = new JFrame("Jpotify");

@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class Library {
     private final String name = "MYMUSICS";
+    private static int numberOfSongs = 0;
     private ArrayList<Song> songs;
     private ArrayList<Album> albums;
     private ArrayList<Artist> artists;
@@ -18,6 +19,14 @@ public class Library {
     private HashMap<String, ArrayList<Song>> albumsSongs;
     private HashMap<String, ArrayList<Song>> playListsSongs;
     private HashMap<String, ArrayList<Song>> artistsSongs;
+
+    public static void setNumberOfSongs(int numberOfSongs) {
+        Library.numberOfSongs = numberOfSongs;
+    }
+
+    public static int getNumberOfSongs() {
+        return numberOfSongs;
+    }
 
     /**
      * @param songDirectory This function find music with songDirectory and add it to library.
@@ -35,12 +44,11 @@ public class Library {
                 albumsSongs.put(song.getAlbumName(), tempAlbum.getSongs());
                 albums.add(tempAlbum);
                 tempAlbum = null;
-
             }
 
         } else
             System.out.println("Already added");
-        song = null;
+        numberOfSongs++;
     }
 
     /**
