@@ -1,9 +1,10 @@
 package Logic.Entities;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CollectionOfSongs {
+public class CollectionOfSongs implements Serializable {
     private String name;
     private ImageIcon imageIcon = null;
     private ArrayList<Song> songs;
@@ -12,6 +13,12 @@ public class CollectionOfSongs {
         songs = new ArrayList<Song>();
         this.name = name;
         //this.imageIcon  = imageIcon;
+    }
+
+    public void setName(String name) {
+        if(this.name.equals("Favorite Songs")&& this.name.equals("Shared Playlist"))
+            return;
+        this.name = name;
     }
 
     public String getName() {
