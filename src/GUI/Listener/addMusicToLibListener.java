@@ -27,6 +27,7 @@ public class addMusicToLibListener implements ActionListener {
         fileChooserFrame.add(fileChooser);
         fileChooserFrame.setVisible(true);
         fileChooserFrame.setMinimumSize(new Dimension(600,400));
+            System.out.println(fileChooser.getSelectedFile().getPath());
         library.addSong(fileChooser.getSelectedFile().getPath());
         fileChooserFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

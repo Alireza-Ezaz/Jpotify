@@ -2,6 +2,7 @@ package GUI;
 
 import GUI.Listener.addMusicToLibListener;
 import GUI.Listener.darkModeListener;
+import GUI.Listener.newPlaylistListener;
 import Logic.Library;
 
 import javax.imageio.ImageIO;
@@ -45,13 +46,14 @@ public class MainGraph {
         eastPanel.setBackground(Color.lightGray);
 
         JLabel fActivity = new JLabel(" Friend Activity");
+        fActivity.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,15));
         eastPanelArrayList.add(fActivity);
         fActivity.setPreferredSize(dimensionCreator(150, 20));
         eastPanel.add(fActivity);
         myFrame.add(eastPanel, BorderLayout.EAST);
     }
 
-    private void centerPanel() {
+    private void centerPanel(Library lib) {
         JPanel centerPanel = new JPanel(new FlowLayout());
         centerPanelArrayList.add(centerPanel);
         centerPanel.setBackground(Color.GRAY);
@@ -62,14 +64,16 @@ public class MainGraph {
 
 
         JButton add = new JButton(" +  Add Music To Library");
+        add.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,13));
         centerPanelArrayList.add(add);
-        add.addActionListener(new addMusicToLibListener(library));
+        add.addActionListener(new addMusicToLibListener(lib));
 
         add.setPreferredSize(dimensionCreator(200, 30));
         add.setBackground(Color.gray);
         menuBar.add(add);
         menuBar.setBackground(Color.gray);
         JButton signIn = new JButton("Sign in");
+        signIn.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,15));
         centerPanelArrayList.add(signIn);
 
         signIn.setPreferredSize(dimensionCreator(150, 30));
@@ -82,6 +86,7 @@ public class MainGraph {
         profileIcon.setPreferredSize(dimensionCreator(30, 30));
         menuBar.add(profileIcon);
         JCheckBox darkMode = new JCheckBox("Dark Mode", false);
+        darkMode.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
         centerPanelArrayList.add(darkMode);
         darkMode.addActionListener(new darkModeListener(myFrame, centerPanelArrayList, eastPanelArrayList, northPanelArrayList, southPanelArrayList, leftPanelArrayList));
         darkMode.setPreferredSize(dimensionCreator(150, 30));
@@ -143,7 +148,7 @@ public class MainGraph {
         myFrame.add(southPanel, BorderLayout.SOUTH);
     }
 
-    private void leftPanel() {
+    private void leftPanel(Library lib) {
         JPanel leftPanel = new JPanel(new FlowLayout());
         leftPanelArrayList.add(leftPanel);
         leftPanel.setPreferredSize(dimensionCreator(150, Toolkit.getDefaultToolkit().getScreenSize().height));
@@ -167,12 +172,14 @@ public class MainGraph {
         libraryList.setPreferredSize(dimensionCreator(150, 70));
         playlistList.setPreferredSize(dimensionCreator(150, 300));
 
-        JLabel library = new JLabel("Library");
+        JLabel library = new JLabel("LIBRARY");
+        library.setFont(new Font("GothamBold",Font.ITALIC,16));
         //library.setFont(new Font(""));
         leftPanelArrayList.add(library);
         library.setPreferredSize(dimensionCreator(150, 20));
 
-        JLabel playlistListLabel = new JLabel("Playlists");
+        JLabel playlistListLabel = new JLabel("PLAYLISTS");
+        playlistListLabel.setFont(new Font("GothamBold",Font.ITALIC,16));
         leftPanelArrayList.add(playlistListLabel);
         playlistListLabel.setPreferredSize(dimensionCreator(150, 20));
 
@@ -190,7 +197,9 @@ public class MainGraph {
         leftPanel.add(artworkP);
 
         JLabel musicName = new JLabel(" Music Name");
+        musicName.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
         JLabel artist = new JLabel(" Artist Name");
+        artist.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
         leftPanelArrayList.add(musicName);
         leftPanelArrayList.add(artist);
         musicName.setPreferredSize(dimensionCreator(150, 20));
@@ -213,6 +222,8 @@ public class MainGraph {
         leftPanel.setBackground(Color.LIGHT_GRAY);
         myFrame.add(leftPanel, BorderLayout.WEST);
         JButton newPlaylist = new JButton("+   New Playlist");
+        newPlaylist.addActionListener(new newPlaylistListener(lib));
+        newPlaylist.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,15));
         leftPanelArrayList.add(newPlaylist);
         newPlaylist.setBackground(Color.lightGray);
         newPlaylist.setPreferredSize(dimensionCreator(150, 50));
@@ -234,10 +245,10 @@ public class MainGraph {
         leftPanelArrayList = new ArrayList<>();
 
         //Left panel
-        leftPanel();
+        leftPanel(library);
 
         //Center panel
-        centerPanel();
+        centerPanel(library);
 
         //East panel
         eastPanel();
@@ -250,7 +261,7 @@ public class MainGraph {
 
         ///////////
         //System.out.println("width: " + Toolkit.getDefaultToolkit().getScreenSize().width + "Height :" + Toolkit.getDefaultToolkit().getScreenSize().height);
-        myFrame.setMinimumSize(dimensionCreator(1500, 1200));
+        myFrame.setMinimumSize(dimensionCreator(1600, 1255));
         myFrame.setMaximumSize(dimensionCreator(1440, 960));
         //if (Toolkit.getDefaultToolkit().getScreenSize().width < 1500)
         myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
