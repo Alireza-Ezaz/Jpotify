@@ -1,9 +1,10 @@
 package Logic.Entities;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CollectionOfSongs {
+public class CollectionOfSongs implements Serializable {
     private String name;
     private ImageIcon imageIcon = null;
     private ArrayList<Song> songs;
