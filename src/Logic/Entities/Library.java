@@ -25,9 +25,15 @@ public class Library {
         songs = new ArrayList<Song>();
         playLists = new ArrayList<PlayList>();
         playListsSongs = new HashMap<String, ArrayList<Song>>();
-
         albumsSongs = new HashMap<String, ArrayList<Song>>();
         artistsSongs = new HashMap<String, ArrayList<Song>>();
+
+        PlayList favoritePlayList = new PlayList("Favorite Songs");
+        PlayList sharedPlaylist = new PlayList("Shared Playlist");
+        playLists.add(favoritePlayList);
+        playLists.add(sharedPlaylist);
+        playListsSongs.put(favoritePlayList.getName(), favoritePlayList.getSongs());
+        playListsSongs.put(sharedPlaylist.getName(),sharedPlaylist.getSongs());
     }
 
     public static void setNumberOfSongs(int numberOfSongs) {
@@ -172,6 +178,18 @@ public class Library {
                 playList.addSong(song);
                 }
         }
+    }
+    /**
+     * This method will remove a playList
+     * This method does not let the user to delete static playLists
+     */
+    public void removePlaylist(String playlistName){
+        if(playlistName.equals("Favorite Songs")&& playlistName.equals("Shared Playlist"))
+            return;
+        for (PlayList playList:playLists)
+            if(playList.getName().equals(playlistName) )
+                playLists.remove(playList);
+
     }
 
     /**
