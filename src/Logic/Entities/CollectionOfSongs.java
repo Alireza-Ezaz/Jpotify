@@ -15,6 +15,12 @@ public class CollectionOfSongs implements Serializable {
         //this.imageIcon  = imageIcon;
     }
 
+    public void setName(String name) {
+        if(this.name.equals("Favorite Songs")&& this.name.equals("Shared Playlist"))
+            return;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

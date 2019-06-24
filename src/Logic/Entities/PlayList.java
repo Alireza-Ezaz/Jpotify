@@ -3,6 +3,7 @@ package Logic.Entities;
 import Logic.Entities.CollectionOfSongs;
 
 import javax.swing.*;
+import java.io.Serializable;
 
 public class PlayList extends CollectionOfSongs {
 

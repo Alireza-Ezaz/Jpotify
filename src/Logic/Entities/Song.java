@@ -10,10 +10,19 @@ public class Song implements Serializable {
     private String artistName;
     private String albumName;
     private String lyric = "not downloaded";
+    private boolean isFavorite = false;
     private ImageIcon artWork = null;
 
     public Song(String directory) {
         this.directory = directory;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
     public void setName(String name) {
