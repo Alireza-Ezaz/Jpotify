@@ -3,7 +3,8 @@ package GUI;
 import GUI.Listener.addMusicToLibListener;
 import GUI.Listener.darkModeListener;
 import GUI.Listener.newPlaylistListener;
-import Logic.Library;
+import Logic.Entities.Library;
+import Logic.Player.MP3Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -272,5 +273,10 @@ public class MainGraph {
     public static void main(String[] args) {
         Library lib = new Library();
         MainGraph mainGraph = new MainGraph(lib);
+        lib.loadSongs();
+        MP3Player mp3Player = new MP3Player(lib.getSongs());
+        Thread t = new Thread(mp3Player);
+        t.start();
+        System.out.println(lib);
     }
 }
