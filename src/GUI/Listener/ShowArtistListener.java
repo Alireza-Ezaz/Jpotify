@@ -33,6 +33,11 @@ public class ShowArtistListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //centerPanelArray.remove(artists);
         artists.removeAll();
+        SwingUtilities.updateComponentTreeUI(frame);
+//        frame.invalidate();
+//        frame.validate();
+//        frame.repaint();
+        frame.setVisible(true);
         float[] floats = new float[3];
 
         for (Object ob : centerPanelArray) {
@@ -63,8 +68,7 @@ public class ShowArtistListener implements ActionListener {
         }
 
 
-
-        artists.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 630));
+        artists.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 730));
         for (Artist artist : library.getArtists()) {
             CoverPanel musicCoverPanel = new CoverPanel(artist);
             musicCoverPanel.setPreferredSize(new Dimension(150, 220));
@@ -73,9 +77,10 @@ public class ShowArtistListener implements ActionListener {
             musicCoverPanel.add(musicCoverPanel.getLabel2());
             artists.add(musicCoverPanel);
         }
+
         centerPanel.add(artists);
         centerPanelArray.add(artists);
-
+        SwingUtilities.updateComponentTreeUI(frame);
         frame.setVisible(true);
 
 
