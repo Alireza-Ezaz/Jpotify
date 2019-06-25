@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class darkModeListener implements ActionListener {
+public class DarkModeListener implements ActionListener {
     private JFrame frame;
     private ArrayList<Object> centerPanelArrayList;
     private ArrayList<Object> eastPanelArrayList;
@@ -18,7 +18,7 @@ public class darkModeListener implements ActionListener {
     private ArrayList<Object> leftPanelArrayList;
     private float[] floats;
 
-    public darkModeListener(JFrame frame, ArrayList<Object> centerPanelArrayList, ArrayList<Object> eastPanelArrayList, ArrayList<Object> northPanelArrayList, ArrayList<Object> southPanelArrayList, ArrayList<Object> leftPanelArrayList) {
+    public DarkModeListener(JFrame frame, ArrayList<Object> centerPanelArrayList, ArrayList<Object> eastPanelArrayList, ArrayList<Object> northPanelArrayList, ArrayList<Object> southPanelArrayList, ArrayList<Object> leftPanelArrayList) {
         this.frame = frame;
         this.centerPanelArrayList = centerPanelArrayList;
         this.eastPanelArrayList = eastPanelArrayList;

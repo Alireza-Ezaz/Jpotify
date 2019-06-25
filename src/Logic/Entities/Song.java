@@ -1,7 +1,12 @@
 package Logic.Entities;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Song implements Serializable {
@@ -12,9 +17,21 @@ public class Song implements Serializable {
     private String lyric = "not downloaded";
     private boolean isFavorite = false;
     private ImageIcon artWork = null;
+    private Date lastPlay;
+
 
     public Song(String directory) {
         this.directory = directory;
+        lastPlay = new Date();
+        try {
+            BufferedImage img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png"));
+            BufferedImage fimg = new BufferedImage(30, 30, img.getType());
+            artWork = new ImageIcon(img);
+
+        } catch (Exception ex) {
+            System.out.println("Image not found");
+
+        }
     }
 
     public void setFavorite(boolean favorite) {
@@ -45,6 +62,14 @@ public class Song implements Serializable {
         this.artistName = artistName;
     }
 
+    public void setLastPlay(Date lastPlay) {
+        this.lastPlay = lastPlay;
+    }
+
+    public Date getLastPlay() {
+        return lastPlay;
+    }
+
     public String getName() {
         return name;
     }
@@ -71,7 +96,7 @@ public class Song implements Serializable {
 
     @Override
     public String toString() {
-        return "Name: " + name + "\nDirectory: " + directory + "\nArtist: " + artistName + "\nAlbum: " + albumName + "\n";
+        return "Name: " + name + "\nDirectory: " + directory + "\nArtist: " + artistName + "\nAlbum: " + albumName + "\n"+"Last play: "+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastPlay)+"\n";
     }
 
     @Override
@@ -91,4 +116,6 @@ public class Song implements Serializable {
         result = 37 * result + directory.hashCode();
         return result;
     }
+
+
 }

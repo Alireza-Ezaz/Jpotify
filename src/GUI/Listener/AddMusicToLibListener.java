@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class addMusicToLibListener implements ActionListener {
+public class AddMusicToLibListener implements ActionListener {
     private JFileChooser chooser;
     private Library library;
     private JFrame fileChooserFrame;
 
-    public addMusicToLibListener(Library library) {
+    public AddMusicToLibListener(Library library) {
         chooser = new JFileChooser();
         fileChooserFrame = new JFrame();
         this.library = library;
@@ -30,10 +30,12 @@ public class addMusicToLibListener implements ActionListener {
         int returnValue = chooser.showOpenDialog(fileChooserFrame);
         if (returnValue == JFileChooser.APPROVE_OPTION)
             file = chooser.getSelectedFile();
-        library.addSong(file.getPath());
-        System.out.println(library);
-        library.saveLibrarySongs();
-
+        if (file != null) {
+            library.addSong(file.getPath());
+            System.out.println(library);
+            library.saveLibrarySongs();
+            library.loadSongs();
+        }
 
 
         fileChooserFrame.setMinimumSize(new Dimension(600, 400));

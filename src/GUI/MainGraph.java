@@ -1,8 +1,9 @@
 package GUI;
 
-import GUI.Listener.addMusicToLibListener;
-import GUI.Listener.darkModeListener;
-import GUI.Listener.newPlaylistListener;
+import GUI.Listener.*;
+import GUI.Listener.AddMusicToLibListener;
+import GUI.Listener.DarkModeListener;
+import GUI.Listener.NewPlaylistListener;
 import Logic.Entities.Library;
 import Logic.Player.MP3Player;
 
@@ -21,6 +22,7 @@ public class MainGraph {
     private ArrayList<Object> northPanelArrayList;
     private ArrayList<Object> southPanelArrayList;
     private ArrayList<Object> leftPanelArrayList;
+    private JPanel centerPanel;
 
     private ImageIcon imageCreator(String path) {
         try {
@@ -54,8 +56,8 @@ public class MainGraph {
         myFrame.add(eastPanel, BorderLayout.EAST);
     }
 
-    private void centerPanel(Library lib) {
-        JPanel centerPanel = new JPanel(new FlowLayout());
+    private void centerPanel(Library lib, JPanel centerPanel ) {
+
         centerPanelArrayList.add(centerPanel);
         centerPanel.setBackground(Color.GRAY);
 
@@ -67,7 +69,7 @@ public class MainGraph {
         JButton add = new JButton(" +  Add Music To Library");
         add.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,13));
         centerPanelArrayList.add(add);
-        add.addActionListener(new addMusicToLibListener(lib));
+        add.addActionListener(new AddMusicToLibListener(lib));
 
         add.setPreferredSize(dimensionCreator(200, 30));
         add.setBackground(Color.gray);
@@ -89,7 +91,7 @@ public class MainGraph {
         JCheckBox darkMode = new JCheckBox("Dark Mode", false);
         darkMode.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
         centerPanelArrayList.add(darkMode);
-        darkMode.addActionListener(new darkModeListener(myFrame, centerPanelArrayList, eastPanelArrayList, northPanelArrayList, southPanelArrayList, leftPanelArrayList));
+        darkMode.addActionListener(new DarkModeListener(myFrame, centerPanelArrayList, eastPanelArrayList, northPanelArrayList, southPanelArrayList, leftPanelArrayList));
         darkMode.setPreferredSize(dimensionCreator(150, 30));
         darkMode.setBackground(Color.gray);
         menuBar.add(darkMode);
@@ -97,11 +99,11 @@ public class MainGraph {
 
 
         /////////////////////////////
-        JPanel recentlyPlayed = new JPanel();
+       /* JPanel recentlyPlayed = new JPanel();
         centerPanelArrayList.add(recentlyPlayed);
 
         recentlyPlayed.setPreferredSize(dimensionCreator(Toolkit.getDefaultToolkit().getScreenSize().width, 150));
-        recentlyPlayed.setBackground(Color.lightGray);
+        recentlyPlayed.setBackground(Color.lightGray);*/
 
         myFrame.add(centerPanel, BorderLayout.CENTER);
     }
@@ -149,17 +151,31 @@ public class MainGraph {
         myFrame.add(southPanel, BorderLayout.SOUTH);
     }
 
-    private void leftPanel(Library lib) {
+    private void leftPanel(Library lib, JPanel centerPanel, ArrayList<Object> cpArrayList, JFrame frame) {
         JPanel leftPanel = new JPanel(new FlowLayout());
         leftPanelArrayList.add(leftPanel);
         leftPanel.setPreferredSize(dimensionCreator(150, Toolkit.getDefaultToolkit().getScreenSize().height));
 
-        DefaultListModel listModelLibrary = new DefaultListModel();
-        listModelLibrary.addElement(" Musics");
-        listModelLibrary.addElement(" Albums");
-        listModelLibrary.addElement(" Artists");
-        JList libraryList = new JList(listModelLibrary);
-        leftPanelArrayList.add(libraryList);
+
+
+        JButton music = new JButton("Musics");
+        JButton album = new JButton("Albums");
+        JButton artists = new JButton("Artists");
+        music.setBackground(Color.LIGHT_GRAY);
+        album.setBackground(Color.LIGHT_GRAY);
+        artists.setBackground(Color.LIGHT_GRAY);
+        JPanel musics = new JPanel(new FlowLayout());
+
+        leftPanelArrayList.add(music);
+        leftPanelArrayList.add(album);
+        leftPanelArrayList.add(artists);
+        music.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
+        album.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
+        artists.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
+        music.setPreferredSize(dimensionCreator(150,30));
+        album.setPreferredSize(dimensionCreator(150,30));
+        artists.setPreferredSize(dimensionCreator(150,30));
+
 //        JScrollPane scrollPane = new JScrollPane();
 //        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 //        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -170,12 +186,11 @@ public class MainGraph {
         leftPanelArrayList.add(playlistList);
 
 
-        libraryList.setPreferredSize(dimensionCreator(150, 70));
+        //libraryList.setPreferredSize(dimensionCreator(150, 70));
         playlistList.setPreferredSize(dimensionCreator(150, 300));
 
         JLabel library = new JLabel("LIBRARY");
         library.setFont(new Font("GothamBold",Font.ITALIC,16));
-        //library.setFont(new Font(""));
         leftPanelArrayList.add(library);
         library.setPreferredSize(dimensionCreator(150, 20));
 
@@ -185,7 +200,9 @@ public class MainGraph {
         playlistListLabel.setPreferredSize(dimensionCreator(150, 20));
 
         leftPanel.add(library);
-        leftPanel.add(libraryList);
+        leftPanel.add(music);
+        leftPanel.add(album);
+        leftPanel.add(artists);
         //leftPanel.add(scrollPane);
         leftPanel.add(playlistListLabel);
         leftPanel.add(playlistList);
@@ -197,10 +214,15 @@ public class MainGraph {
         artworkP.setPreferredSize(dimensionCreator(150, 150));
         leftPanel.add(artworkP);
 
+
+
         JLabel musicName = new JLabel(" Music Name");
         musicName.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
         JLabel artist = new JLabel(" Artist Name");
         artist.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,14));
+        music.addActionListener(new ShowMusicListener(centerPanel, lib,cpArrayList, frame, musics, artworkP,musicName,artist));
+        album.addActionListener(new ShowAlbumListener(centerPanel, lib,cpArrayList, frame, musics));
+        artists.addActionListener(new ShowArtistListener(centerPanel, lib,cpArrayList, frame, musics));
         leftPanelArrayList.add(musicName);
         leftPanelArrayList.add(artist);
         musicName.setPreferredSize(dimensionCreator(150, 20));
@@ -223,7 +245,7 @@ public class MainGraph {
         leftPanel.setBackground(Color.LIGHT_GRAY);
         myFrame.add(leftPanel, BorderLayout.WEST);
         JButton newPlaylist = new JButton("+   New Playlist");
-        newPlaylist.addActionListener(new newPlaylistListener(lib));
+        newPlaylist.addActionListener(new NewPlaylistListener(lib));
         newPlaylist.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,15));
         leftPanelArrayList.add(newPlaylist);
         newPlaylist.setBackground(Color.lightGray);
@@ -237,6 +259,7 @@ public class MainGraph {
     public MainGraph(Library library) {
         this.library = library;
         myFrame = new JFrame("Jpotify");
+        centerPanel = new JPanel(new FlowLayout());
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         myFrame.setLayout(new BorderLayout());
         centerPanelArrayList = new ArrayList<>();
@@ -245,11 +268,12 @@ public class MainGraph {
         southPanelArrayList = new ArrayList<>();
         leftPanelArrayList = new ArrayList<>();
 
+
         //Left panel
-        leftPanel(library);
+        leftPanel(library, centerPanel, centerPanelArrayList, myFrame);
 
         //Center panel
-        centerPanel(library);
+        centerPanel(library, centerPanel);
 
         //East panel
         eastPanel();
@@ -268,15 +292,17 @@ public class MainGraph {
         myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         myFrame.setVisible(true);
 
+
     }
 
     public static void main(String[] args) {
         Library lib = new Library();
-        MainGraph mainGraph = new MainGraph(lib);
         lib.loadSongs();
-        MP3Player mp3Player = new MP3Player(lib.getSongs());
-        Thread t = new Thread(mp3Player);
-        t.start();
-        System.out.println(lib);
+        MainGraph mainGraph = new MainGraph(lib);
+
+//        MP3Player mp3Player = new MP3Player(lib.getSongs(),lib);
+//        Thread t = new Thread(mp3Player);
+//        t.start();
+        //System.out.println(lib);
     }
 }

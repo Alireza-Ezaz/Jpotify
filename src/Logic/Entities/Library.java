@@ -4,11 +4,13 @@ import Logic.Player.MP3Player;
 import com.mpatric.mp3agic.*;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 public class Library {
@@ -16,6 +18,8 @@ public class Library {
     private static int numberOfSongs = 0;
     private ArrayList<Song> songs;
     private ArrayList<PlayList> playLists;
+    private ArrayList<Album> albums;
+    private ArrayList<Artist> artists;
     private HashMap<String, ArrayList<Song>> playListsSongs;
     private HashMap<String, ArrayList<Song>> albumsSongs;
     private HashMap<String, ArrayList<Song>> artistsSongs;
@@ -24,6 +28,8 @@ public class Library {
     public Library() {
         songs = new ArrayList<Song>();
         playLists = new ArrayList<PlayList>();
+        albums = new ArrayList<Album>();
+        artists = new ArrayList<Artist>();
         playListsSongs = new HashMap<String, ArrayList<Song>>();
         albumsSongs = new HashMap<String, ArrayList<Song>>();
         artistsSongs = new HashMap<String, ArrayList<Song>>();
@@ -33,9 +39,18 @@ public class Library {
         playLists.add(favoritePlayList);
         playLists.add(sharedPlaylist);
         playListsSongs.put(favoritePlayList.getName(), favoritePlayList.getSongs());
-        playListsSongs.put(sharedPlaylist.getName(),sharedPlaylist.getSongs());
+        playListsSongs.put(sharedPlaylist.getName(), sharedPlaylist.getSongs());
     }
+    private ImageIcon getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
 
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+
+        return (new ImageIcon(resizedImg));
+    }
     public static void setNumberOfSongs(int numberOfSongs) {
         Library.numberOfSongs = numberOfSongs;
     }
@@ -64,6 +79,13 @@ public class Library {
         return artistsSongs;
     }
 
+    public ArrayList<Album> getAlbums() {
+        return albums;
+    }
+
+    public ArrayList<Artist> getArtists() {
+        return artists;
+    }
 
     /**
      * @param songDirectory This function find music with songDirectory and add it to library.
@@ -78,6 +100,22 @@ public class Library {
 
         //when a new music is added to a library numberOfSongs increases by 1
         numberOfSongs++;
+    }
+
+    /**
+     * This method will remove a song from library
+     */
+
+    public void removeSong(String songDirectory) {
+        Song tempSong = null;
+        for (Song song : songs)
+            if (song.getDirectory().equals(songDirectory))
+                tempSong = song;
+
+        if (tempSong != null){
+            songs.remove(tempSong);
+        }
+
     }
 
     /**
@@ -107,9 +145,11 @@ public class Library {
             ID3v2 id3v2Tag = mp3file.getId3v2Tag();
             byte[] albumImageData = id3v2Tag.getAlbumImage();
             //All files do not have image icon;
-            if (albumImageData != null)
-                song.setArtWork(new ImageIcon(albumImageData));
+            if (albumImageData != null) {
 
+                song.setArtWork(new ImageIcon(ImageIO.read(new ByteArrayInputStream(albumImageData)).getScaledInstance(150,150,Image.SCALE_SMOOTH)));
+                //song.setArtWork(new ImageIcon(albumImageData));
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("Couldnt find file");
@@ -127,23 +167,36 @@ public class Library {
     /**
      * This method classifies the songs and add them to hashMaps in the fields
      */
-    private void classifySongs() {
+    public void classifySongs() {
         //classifying into albums and artists
         for (Song song : songs) {
             if (albumsSongs.containsKey(song.getAlbumName())) {
                 albumsSongs.get(song.getAlbumName()).add(song);
+                for (Album album : albums)
+                    if (album.getName().equals(song.getAlbumName())) {
+                        album.getSongs().add(song);
+                        break;
+                    }
+
             }
             if (!albumsSongs.containsKey(song.getAlbumName()) && song.getAlbumName().trim().length() != 0) {
-                Album album = new Album(song.getArtistName(), song.getArtWork());
+                Album album = new Album(song.getAlbumName(),song.getArtistName(), song.getArtWork());
+                albums.add(album);
                 album.addSong(song);
                 albumsSongs.put(song.getAlbumName(), album.getSongs());
             }
 
             if (artistsSongs.containsKey(song.getArtistName())) {
                 artistsSongs.get(song.getArtistName()).add(song);
+                for (Artist artist : artists)
+                    if (artist.getName().equals(song.getArtistName())) {
+                        artist.getSongs().add(song);
+                        break;
+                    }
             }
             if (!artistsSongs.containsKey(song.getArtistName())) {
                 Artist artist = new Artist(song.getArtistName());
+                artists.add(artist);
                 artist.addSong(song);
                 artistsSongs.put(song.getArtistName(), artist.getSongs());
             }
@@ -152,6 +205,22 @@ public class Library {
         for (PlayList playList : playLists) {
             playListsSongs.put(playList.getName(), playList.getSongs());
         }
+//        saveLibrarySongs();
+//        loadSongs();
+
+    }
+
+    /**
+     * This method will sort songs by their lastPlay
+     */
+    private void sortSongs() {
+        Collections.sort(songs, new Comparator<Song>() {
+            public int compare(Song s1, Song s2) {
+                if (s1.getLastPlay().equals(s2.getLastPlay()))
+                    return 0;
+                return s1.getLastPlay().after(s2.getLastPlay()) ? -1 : 1;
+            }
+        });
 
     }
 
@@ -173,21 +242,22 @@ public class Library {
      * @param playlistName is given and a song will be added to it
      */
     public void addSongToSpecificPlayList(String playlistName, Song song) {
-        for(PlayList playList:playLists){
-            if(playList.getName().equals(playlistName)){
+        for (PlayList playList : playLists) {
+            if (playList.getName().equals(playlistName)) {
                 playList.addSong(song);
-                }
+            }
         }
     }
+
     /**
      * This method will remove a playList
      * This method does not let the user to delete static playLists
      */
-    public void removePlaylist(String playlistName){
-        if(playlistName.equals("Favorite Songs")&& playlistName.equals("Shared Playlist"))
+    public void removePlaylist(String playlistName) {
+        if (playlistName.equals("Favorite Songs") && playlistName.equals("Shared Playlist"))
             return;
-        for (PlayList playList:playLists)
-            if(playList.getName().equals(playlistName) )
+        for (PlayList playList : playLists)
+            if (playList.getName().equals(playlistName))
                 playLists.remove(playList);
 
     }
@@ -212,6 +282,7 @@ public class Library {
             objectOutputStream.close();
             objectOutputStream1.close();
             fileOutputStream.close();
+            //System.out.println("saved");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -232,6 +303,9 @@ public class Library {
             numberOfSongs = (int) objectInputStream.readObject();
             songs = (ArrayList<Song>) objectInputStream.readObject();
             playLists = (ArrayList<PlayList>) objectInputStream1.readObject();
+
+            sortSongs();
+
             fileInputStream.close();
             fileInputStream1.close();
             classifySongs();
@@ -255,55 +329,65 @@ public class Library {
         }
         return str;
     }
-  /*  public void printPlayListSongs(){
-        for(Map.Entry<String,ArrayList<Song>> entry:playListsSongs.entrySet()){
-            System.out.println(entry.getKey());
-            ArrayList<Song> songs = entry.getValue();
-            for(Song song: songs)
-                System.out.println(song);
-        }
-    }*/
-
-    public static void main(String[] args) {
-        Library library = new Library();
-        library.loadSongs();
-        library.classifySongs();
-      /*  library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\1.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\2.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\3.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\4.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\5.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\6.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\7.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\8.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\9.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\10.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\11.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\12.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\13.mp3");
-        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\14.mp3");
-        System.out.println("Number of songs: " + numberOfSongs);
-
-        library.createPlayList("PlayList 1");
-        library.addSongToSpecificPlayList("PlayList 1",library.getSongs().get(0));
-        library.addSongToSpecificPlayList("PlayList 1",library.getSongs().get(1));
-        library.addSongToSpecificPlayList("PlayList 1",library.getSongs().get(2));*/
-
-
-       // library.saveLibrarySongs();
-
-        //
-
-
-
-
-        System.out.println(library);
-        MP3Player mp3Player = new MP3Player(library.songs.get(0));
-        Thread t = new Thread(mp3Player);
-        t.start();
-
-
-    }
+//   public void printPlayListSongs(){
+//        for(Map.Entry<String,ArrayList<Song>> entry:playListsSongs.entrySet()){
+//            System.out.println(entry.getKey());
+//            ArrayList<Song> songs = entry.getValue();
+//            for(Song song: songs)
+//                System.out.println(song);
+//        }
+//    }*/
+//
+//  /*  public static void main(String[] args) throws InterruptedException {
+//        Library library = new Library();
+//       // library.loadSongs();
+//        library.classifySongs();
+//
+//       /* library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\1.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\2.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\3.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\4.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\5.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\6.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\7.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\8.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\9.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\10.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\11.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\12.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\13.mp3");
+//        library.addSong("F:\\Jpotify\\src\\Logic\\Entities\\14.mp3");
+//        System.out.println("Number of songs: " + numberOfSongs);*/
+//
+//        library.createPlayList("PlayList 1");
+//        library.addSongToSpecificPlayList("PlayList 1",library.getSongs().get(0));
+//        library.addSongToSpecificPlayList("PlayList 1",library.getSongs().get(1));
+//        library.addSongToSpecificPlayList("PlayList 1",library.getSongs().get(2));
+//
+//
+//        library.saveLibrarySongs();
+//
+//        //
+//
+//
+//        System.out.println(library);
+//        MP3Player mp3Player = new MP3Player(library.getSongs(), library);
+//        Thread t = new Thread(mp3Player);
+//        t.start();
+//
+//
+//        Thread.sleep(5000);
+//        mp3Player.setPaused();
+//        Thread.sleep(2000);
+//        mp3Player.setResume();
+//        Thread.sleep(2000);
+//        mp3Player.next();
+//        //library.saveLibrarySongs();
+//
+//        // mp3Player.next();
+//
+//
+//    }
 
 
 }
