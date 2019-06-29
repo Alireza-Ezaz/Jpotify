@@ -3,7 +3,6 @@ package GUI.Listener;
 import GUI.CustomPanel.CoverPanel;
 import Logic.Entities.Library;
 import Logic.Entities.PlayList;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +11,12 @@ import java.util.ArrayList;
 
 import static GUI.Listener.ShowMusicListener.getA;
 import static GUI.MainGraph.getPn;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class shows all playlist`s list
+ */
 
 
 public class PlayListList implements ActionListener {

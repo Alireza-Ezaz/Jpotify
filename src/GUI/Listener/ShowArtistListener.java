@@ -3,17 +3,19 @@ package GUI.Listener;
 import GUI.CustomPanel.CoverPanel;
 import Logic.Entities.Artist;
 import Logic.Entities.Library;
-import Logic.Entities.Song;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import static GUI.Listener.ShowMusicListener.getA;
-import static GUI.Listener.ShowMusicListener.setA;
 import static GUI.MainGraph.getPn;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class shows artist
+ */
 
 public class ShowArtistListener implements ActionListener {
     private JPanel centerPanel;
@@ -43,11 +45,6 @@ public class ShowArtistListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         centerPanel.removeAll();
         if (getA() == 0) {
-//            System.out.println("meeeeeeeeeeeeeeeeeeeeee");
-//            sp = new JScrollPane(centerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//            sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
-//            SwingUtilities.updateComponentTreeUI(frame);
-//            setA(getA()+1);
             frame.remove(getPn());
      }
         SwingUtilities.updateComponentTreeUI(frame);
@@ -55,9 +52,6 @@ public class ShowArtistListener implements ActionListener {
         SwingUtilities.updateComponentTreeUI(frame);
         frame.setVisible(true);
         library.loadSongs();
-//        frame.invalidate();
-//        frame.validate();
-//        frame.repaint();
 
         for (Object ob : centerPanelArray) {
             if (ob instanceof JCheckBox) {

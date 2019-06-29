@@ -3,15 +3,19 @@ package GUI.Listener;
 import GUI.CustomPanel.CoverPanel;
 import Logic.Entities.Library;
 import Logic.Entities.Song;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import static GUI.Listener.ShowMusicListener.getA;
 import static GUI.MainGraph.getPn;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class searching into the library
+ */
 
 public class Search implements ActionListener {
     private JPanel centerPanel;
@@ -44,11 +48,6 @@ public class Search implements ActionListener {
         if(phrase != null && phrase !=""&& phrase!=" "){
             centerPanel.removeAll();
             if (getA() == 0) {
-//            System.out.println("meeeeeeeeeeeeeeeeeeeeee");
-//            sp = new JScrollPane(centerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//            sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
-//            SwingUtilities.updateComponentTreeUI(frame);
-//            setA(getA()+1);
                 frame.remove(getPn());
             }
 
@@ -71,12 +70,10 @@ public class Search implements ActionListener {
                         }
                         Color.RGBtoHSB(24, 24, 24, floats);
                         centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-//                    centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
 
 
                     } else {
                         centerPanel.setBackground(Color.gray);
-//                    centerPanel.setBackground(Color.gray);
 
                     }
                 }

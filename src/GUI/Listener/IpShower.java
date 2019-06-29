@@ -4,7 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class shows IP List
+ */
 
 public class IpShower implements ActionListener {
     private DefaultListModel ipList;

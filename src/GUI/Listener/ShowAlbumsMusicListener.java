@@ -4,16 +4,19 @@ import GUI.CustomPanel.CoverPanel;
 import Logic.Entities.Album;
 import Logic.Entities.Library;
 import Logic.Entities.Song;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import static GUI.Listener.ShowMusicListener.getA;
-import static GUI.Listener.ShowMusicListener.setA;
 import static GUI.MainGraph.getPn;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class
+ */
 
 public class ShowAlbumsMusicListener implements ActionListener {
 

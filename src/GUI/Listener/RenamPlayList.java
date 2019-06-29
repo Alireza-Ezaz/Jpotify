@@ -2,12 +2,17 @@ package GUI.Listener;
 
 import Logic.Entities.Library;
 import Logic.Entities.PlayList;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class renames playlist
+ */
 
 public class RenamPlayList implements ActionListener {
     private PlayList playList;

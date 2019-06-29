@@ -12,6 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles Favorite button
+ */
 
 public class Favorite implements ActionListener {
 

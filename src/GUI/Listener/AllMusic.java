@@ -12,7 +12,11 @@ import java.util.ArrayList;
 
 import static GUI.Listener.ShowMusicListener.getA;
 import static GUI.MainGraph.getPn;
-
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class shows music list without remove panel
+ */
 public class AllMusic implements ActionListener {
     private JPanel centerPanel;
     private Library library;
@@ -22,6 +26,7 @@ public class AllMusic implements ActionListener {
     private JButton artwork;
     private JLabel artworkMusicName;
     private JLabel artworkArtisiName;
+
 
 
     public AllMusic(JPanel centerPanel, Library library, ArrayList<Object> centerPanelArray, JFrame frame, JScrollPane sp, JButton artwork, JLabel artworkMusicName, JLabel artworkArtisiName) {
@@ -37,15 +42,11 @@ public class AllMusic implements ActionListener {
     }
 
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         centerPanel.removeAll();
         if (getA() == 0) {
-//            System.out.println("meeeeeeeeeeeeeeeeeeeeee");
-//            sp = new JScrollPane(centerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//            sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
-//            SwingUtilities.updateComponentTreeUI(frame);
-//            setA(getA()+1);
             frame.remove(getPn());
         }
 
@@ -68,12 +69,9 @@ public class AllMusic implements ActionListener {
                     }
                     Color.RGBtoHSB(24, 24, 24, floats);
                     centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-//                    centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-
 
                 } else {
                     centerPanel.setBackground(Color.gray);
-//                    centerPanel.setBackground(Color.gray);
 
                 }
             }

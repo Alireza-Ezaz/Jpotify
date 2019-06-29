@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @author S.Alireza-Ezaz
+ * @version final
+ */
 public class CollectionOfSongs implements Serializable {
     private String name = "";
     private ImageIcon imageIcon = null;
@@ -21,13 +25,10 @@ public class CollectionOfSongs implements Serializable {
 
         } catch (Exception ex) {
             System.out.println("Image not found");
-
         }
     }
 
     public void setName(String newName) {
-       // if(this.name.equals("Favorite Songs")|| this.name.equals("Shared Playlist"))
-          //  return;
         this.name = newName;
     }
 
@@ -38,7 +39,6 @@ public class CollectionOfSongs implements Serializable {
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
-
 
     public ArrayList<Song> getSongs() {
         return songs;

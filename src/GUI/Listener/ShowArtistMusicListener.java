@@ -11,10 +11,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import static GUI.Listener.ShowMusicListener.getA;
-import static GUI.Listener.ShowMusicListener.setA;
 import static GUI.MainGraph.getPn;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class shows artist music
+ */
 
 public class ShowArtistMusicListener implements ActionListener {
 
@@ -49,11 +53,6 @@ public class ShowArtistMusicListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         centerPanel.removeAll();
         if (getA() == 0) {
-//            System.out.println("meeeeeeeeeeeeeeeeeeeeee");
-//            sp = new JScrollPane(centerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//            sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
-//            SwingUtilities.updateComponentTreeUI(frame);
-//            setA(getA()+1);
             frame.remove(getPn());
         }
         SwingUtilities.updateComponentTreeUI(frame);

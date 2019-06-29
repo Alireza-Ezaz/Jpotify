@@ -5,6 +5,11 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles Login and users
+ */
 public class Login {
     private String userName;
     private ImageIcon imageIcon;

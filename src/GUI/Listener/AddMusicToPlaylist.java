@@ -1,22 +1,22 @@
 package GUI.Listener;
 
 import GUI.CustomPanel.CoverPanel;
-import Logic.Entities.Album;
 import Logic.Entities.Library;
 import Logic.Entities.PlayList;
 import Logic.Entities.Song;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
 import static GUI.Listener.ShowMusicListener.getA;
 import static GUI.MainGraph.getPn;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class add music to playlist
+ */
 
 public class AddMusicToPlaylist implements ActionListener {
     private JPanel centerPanel;
@@ -73,12 +73,9 @@ public class AddMusicToPlaylist implements ActionListener {
                     }
                     Color.RGBtoHSB(24, 24, 24, floats);
                     centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-//                    centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-
 
                 } else {
                     centerPanel.setBackground(Color.gray);
-//                    centerPanel.setBackground(Color.gray);
 
                 }
             }

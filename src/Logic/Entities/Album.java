@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+/**
+ * @author S.Alireza-Ezaz
+ * @version final
+ */
 public class Album extends CollectionOfSongs {
     private String artistName;
 

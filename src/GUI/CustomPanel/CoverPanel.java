@@ -4,13 +4,16 @@ import Logic.Entities.Album;
 import Logic.Entities.Artist;
 import Logic.Entities.PlayList;
 import Logic.Entities.Song;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class music, album, playlist, add, remove or artist sample
+ */
 
 public class CoverPanel extends JPanel {
     private String name;
@@ -114,7 +117,6 @@ public class CoverPanel extends JPanel {
     public CoverPanel(PlayList playList) {
         super(new FlowLayout());
         this.name = playList.getName();
-        System.out.println(playList.getName());
         this.artwork = playList.getImageIcon();
         button = new JButton();
         button.setIcon(artwork);
@@ -138,7 +140,6 @@ public class CoverPanel extends JPanel {
     public CoverPanel() {
         super(new FlowLayout());
         this.name = "New Music";
-        //this.artwork = playList.getImageIcon();
         button = new JButton();
         button.setFont(new Font("GothamBold", Font.ITALIC, 120));
         button.setIcon(artwork);
@@ -167,7 +168,6 @@ public class CoverPanel extends JPanel {
     public CoverPanel(String remove) {
         super(new FlowLayout());
         this.name = "";
-        //this.artwork = playList.getImageIcon();
         button = new JButton();
         button.setFont(new Font("GothamBold", Font.ITALIC, 120));
         button.setIcon(artwork);

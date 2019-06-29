@@ -10,6 +10,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles next button
+ */
+
 public class Next implements ActionListener {
     private JButton button;
     public Next(JButton button){

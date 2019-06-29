@@ -14,6 +14,12 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class create new playlist
+ */
+
 public class NewPlaylistListener implements ActionListener {
     private JFrame newPlaylistFrame;
     private Library library;
@@ -59,12 +65,12 @@ public class NewPlaylistListener implements ActionListener {
         setPicture.setText("PlayList Artwork");
 
         try {
-            BufferedImage img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png"));
-            picture.setIcon(new ImageIcon(img));
+            picture.setIcon(new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
 
         } catch (Exception ex) {
             System.out.println("Image not found");
         }
+
         picture.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
         setPicture.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
 
@@ -74,8 +80,7 @@ public class NewPlaylistListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            BufferedImage img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png"));
-            picture.setIcon(new ImageIcon(img));
+            picture.setIcon(new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
 
         } catch (Exception ex) {
             System.out.println("Image not found");
@@ -97,26 +102,24 @@ public class NewPlaylistListener implements ActionListener {
                     imageIcon = (new ImageIcon(ImageIO.read(new ByteArrayInputStream(bytes)).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
 
                     picture.setIcon(imageIcon);
-                    library.createPlayList(playlistName,imageIcon);
+                    library.createPlayList(playlistName, imageIcon);
+                    library.saveLibrarySongs();
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-        } else {
+            } else {
                 try {
-                    BufferedImage img = (BufferedImage) ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-                    imageIcon = new ImageIcon(img);
+                    imageIcon = (new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
                     library.createPlayList(playlistName, imageIcon);
+                    library.saveLibrarySongs();
                 } catch (Exception ex) {
                     System.out.println("Image not found");
                 }
             }
             fileChooserFrame.setMinimumSize(new Dimension(600, 400));
             fileChooserFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
-
 
 
             ///////////////////////////////////////////
@@ -127,7 +130,7 @@ public class NewPlaylistListener implements ActionListener {
             newPlaylistFrame.setLocationRelativeTo(null);
             JButton button = new JButton(playlistName);
             button.setPreferredSize(new Dimension(150, 30));
-            button.addActionListener(new ShowPlayListMusic(centerPanel, library, centerPanelArray, frame, sp, artwork, artworkMusicName, artworkArtisiName, playlistName,plPanel));
+            button.addActionListener(new ShowPlayListMusic(centerPanel, library, centerPanelArray, frame, sp, artwork, artworkMusicName, artworkArtisiName, playlistName, plPanel));
             button.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
             button.setForeground(Color.lightGray);
             plPanel.add(button);

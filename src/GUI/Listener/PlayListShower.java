@@ -1,24 +1,20 @@
 package GUI.Listener;
 
 import GUI.CustomPanel.CoverPanel;
-import Logic.Entities.Album;
 import Logic.Entities.Library;
 import Logic.Entities.PlayList;
-import Logic.Entities.Song;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
-
 import static GUI.Listener.ShowMusicListener.getA;
-import static GUI.Listener.ShowMusicListener.setA;
 import static GUI.MainGraph.getPn;
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class shows  all playlists with remove panel
+ */
 
 public class PlayListShower implements ActionListener {
     private JPanel centerPanel;
@@ -49,11 +45,6 @@ public class PlayListShower implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         centerPanel.removeAll();
         if (getA() == 0) {
-//            System.out.println("meeeeeeeeeeeeeeeeeeeeee");
-//            sp = new JScrollPane(centerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//            sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
-//            SwingUtilities.updateComponentTreeUI(frame);
-//            setA(getA()+1);
             frame.remove(getPn());
         }
         float[] floats = new float[3];

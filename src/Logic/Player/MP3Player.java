@@ -11,8 +11,6 @@ import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.Header;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
-
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +20,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+/**
+ * This class handles Playing,pausing,seeking,... for mp3 files
+ * @author S.Alireza-Ezaz
+ * @version final
+ */
 
 public class MP3Player implements Runnable {
     private volatile AdvancedPlayer player = null;
@@ -38,15 +42,18 @@ public class MP3Player implements Runnable {
     private int index;
     private static int numberOfFrames = 0;
 
+
     public MP3Player(Song song) {
         songs = new ArrayList<Song>();
         songs.add(song);
     }
 
-    public Song getPlayingSong() {
-        return playingSong;
-    }
 
+    /**
+     * @param songs list of songs
+     * @param library all songs in the app
+     * @param index playing start from this index
+     */
     public MP3Player(ArrayList<Song> songs, Library library, JButton artworkButton, JLabel nameLabel, JLabel artistLabel, int index) {
         this.songs = songs;
         this.library = library;
@@ -55,15 +62,17 @@ public class MP3Player implements Runnable {
         this.artistLabel = artistLabel;
         this.index = index;
     }
+    public Song getPlayingSong() {
+        return playingSong;
+    }
 
     public void setFalseisRunning() {
         this.isRunning = false;
     }
-/*
-    public void setSong(Song song) {
-        this.song = song;
-    }*/
 
+    /**
+     *shows that sth is playing right now or not
+     */
     public static boolean isIsRunning() {
         return isRunning;
     }
@@ -72,6 +81,9 @@ public class MP3Player implements Runnable {
         return isPaused;
     }
 
+    /**
+     *this is for order of playing songs in arraylist
+     */
     public static void setIsFirstTimePlayingAnArray(boolean isFirstTimePlayingAnArray) {
         MP3Player.isFirstTimePlayingAnArray = isFirstTimePlayingAnArray;
     }
@@ -86,10 +98,7 @@ public class MP3Player implements Runnable {
             isRunning = true;
             //need chenge
             int i = 0;
-
             for (Song song : songs) {
-
-
                 if (isFirstTimePlayingAnArray) {
                     if (i != index) {
                         i++;
@@ -100,14 +109,11 @@ public class MP3Player implements Runnable {
                     i = 0;
                     isFirstTimePlayingAnArray = false;
                 }
-
                 song.setLastPlay(new Date());
                 playingSong = song;
-
                 artworkButton.setIcon(song.getArtWork());
                 nameLabel.setText(song.getName());
                 artistLabel.setText(song.getArtistName());
-
                 try {
                     int a = 0;
                     for (PlayList playList : library.getPlayLists()) {
@@ -128,11 +134,7 @@ public class MP3Player implements Runnable {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-
-                //library.saveLibrarySongs();
                 inputStream = new FileInputStream(song.getDirectory());
-                //Thead can cause not saving
-
                 player = new AdvancedPlayer(inputStream);
                 if (PlayMusicListener.getUpdateWorker() != null) {
                     synchronized ((Integer) UpdateWorker.getDuration()) {
@@ -142,7 +144,7 @@ public class MP3Player implements Runnable {
                         PlayMusicListener.getUpdateWorker().execute();
                     }
                 }
-
+                //playing
 
                 while (player.play(1)) {
                     if (!isRunning)
@@ -151,7 +153,6 @@ public class MP3Player implements Runnable {
                         synchronized (player) {
                             player.wait();
                         }
-
                     }
                 }
             }
@@ -219,7 +220,6 @@ public class MP3Player implements Runnable {
                 player.close();
                 int i = 0;
                 for (Song song : songs) {
-                    System.out.println(song);
                     if (song.equals(playingSong))
                         break;
                     i++;
@@ -244,7 +244,6 @@ public class MP3Player implements Runnable {
 
 
                 playingSong.setLastPlay(new Date());
-                // library.saveLibrarySongs();
                 player.play(0, 1);
                 artworkButton.setIcon(playingSong.getArtWork());
                 nameLabel.setText(playingSong.getName());
@@ -259,6 +258,9 @@ public class MP3Player implements Runnable {
 
     }
 
+    /**
+     *This method finds a duration of a given song
+     */
     public static int findDuration(Song song) {
         Header h = null;
         FileInputStream fileInputStream = null;
@@ -267,7 +269,6 @@ public class MP3Player implements Runnable {
             Bitstream bitstream = new Bitstream(fileInputStream);
             h = bitstream.readFrame();
 
-            //System.out.println(bitstream);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (BitstreamException e) {
@@ -275,27 +276,18 @@ public class MP3Player implements Runnable {
         }
 
         int size = h.calculate_framesize();
-        //System.out.println(size);
         float ms_per_frame = h.ms_per_frame();
-        //System.out.println(ms_per_frame);
-
         int maxSize = h.max_number_of_frames(10000);
         float t = h.total_ms(size);
-        // System.out.println(h.calculate_framesize());
         long tn = 0;
         try {
             tn = fileInputStream.getChannel().size();
         } catch (IOException ex) {
-            //Logger.getLogger(MP3.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        //System.out.println("Chanel: " + file.getChannel().size());
         int min = h.min_number_of_frames(500);
         int durationAllSeconds = (int) (h.total_ms((int) tn) / 1000);
 
-        int minute = durationAllSeconds / 60;
-        int second = durationAllSeconds % 60;
-        System.out.println(minute);
-        System.out.println(second);
         numberOfFrames = (int) (durationAllSeconds / (h.ms_per_frame() / 1000));
         return durationAllSeconds;
 
@@ -304,11 +296,5 @@ public class MP3Player implements Runnable {
     public static int getNumberOfFrames() {
         return numberOfFrames;
     }
-
-    public static void main(String[] args) {
-        //MP3Player.findDuration();
-
-    }
-
 
 }

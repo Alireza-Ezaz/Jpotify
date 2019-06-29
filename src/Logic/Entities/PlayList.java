@@ -1,13 +1,10 @@
 package Logic.Entities;
 
-import Logic.Entities.CollectionOfSongs;
-
-import javax.swing.*;
-import java.io.Serializable;
-
+/**
+ * @author S.Alireza-Ezaz
+ * @version final
+ */
 public class PlayList extends CollectionOfSongs {
-
-
     public PlayList(String name) {
         super(name);
     }

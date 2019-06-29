@@ -7,6 +7,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class add music to library
+ */
 
 public class AddMusicToLibListener implements ActionListener {
     private JFileChooser chooser;
@@ -40,8 +45,6 @@ public class AddMusicToLibListener implements ActionListener {
 
 
         fileChooserFrame.setMinimumSize(new Dimension(600, 400));
-
-
         fileChooserFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
 

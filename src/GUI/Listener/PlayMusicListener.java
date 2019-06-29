@@ -1,10 +1,8 @@
 package GUI.Listener;
 
-import GUI.MainGraph;
 import Logic.Entities.Library;
 import Logic.Entities.Song;
 import Logic.Player.MP3Player;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +13,13 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static GUI.MainGraph.getPlay;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class plays music
+ */
 
 public class PlayMusicListener implements ActionListener {
     private ArrayList<Song> playingSongs;
@@ -64,21 +67,20 @@ public class PlayMusicListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(tr!= null)
+            tr.stop();
+
         MP3Player.setIsFirstTimePlayingAnArray(true);
-        //System.out.println(tr.isAlive());
-        //System.out.println(song);
         int index = 0;
         for (Song sg : songArrayList) {
             if (sg.equals(song))
                 break;
             index++;
         }
-        //System.out.println(index);
-        /*for (int i = index; i < songArrayList.size(); i++)
-            playingSongs.add(songArrayList.get(i));*/
-        //playingSongs.add(library.getSongs().get(i));
+
         if (tr != null) {
             mp3Player.setFalseisRunning();
+
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e1) {
@@ -107,7 +109,6 @@ public class PlayMusicListener implements ActionListener {
 
         slider.setMinimum(0);
         slider.setMaximum(MP3Player.findDuration(mp3Player.getPlayingSong()));
-        // slider.setValue(0);
 
         if (updateWorker == null) {
             updateWorker = new UpdateWorker(MP3Player.findDuration(mp3Player.getPlayingSong()));
@@ -133,13 +134,12 @@ public class PlayMusicListener implements ActionListener {
             public void mouseReleased(MouseEvent e) {
 
                 UpdateWorker.setI(((JSlider) e.getSource()).getValue());
-                System.out.println("seek to :" + (((JSlider) e.getSource()).getValue() * MP3Player.getNumberOfFrames() / MP3Player.findDuration(song)));
+
                 slider.setValue(((JSlider) e.getSource()).getValue());
 
                 mp3Player.seekTo((((JSlider) e.getSource()).getValue() * MP3Player.getNumberOfFrames() / MP3Player.findDuration(song)));
                 //updateWorker.execute();
 
-                System.out.println("slider value: " + ((JSlider) e.getSource()).getValue());
 
             }
 
@@ -153,26 +153,6 @@ public class PlayMusicListener implements ActionListener {
 
             }
         });
-//        System.out.println(mp3Player.getPlayingSong());
-//        artworkMusicName.setText(mp3Player.getPlayingSong().getName());
-//        artworkArtistiName.setText(mp3Player.getPlayingSong().getArtistName());
-//        artwork.setIcon(mp3Player.getPlayingSong().getArtWork());
-//        int duration = MP3Player.findDuration(PlayMusicListener.getMp3Player().getPlayingSong());
-//        int minute = duration / 60;
-//        int second = duration % 60;
-//        int allseconds = 0;
-//        for (int i = 0; i <= minute; i++)
-//            for (int j = 0; j < 60; j++) {
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e1) {
-//                    e1.printStackTrace();
-//                }
-//                MainGraph.getStopWatch().setText(i + " : " + j);
-//                allseconds++;
-//                if (allseconds == duration)
-//                    break;
-//            }
 
         library.saveLibrarySongs();
 

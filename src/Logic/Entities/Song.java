@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+/**
+ * @author S.Alireza-Ezaz
+ * @version final
+ */
 
 public class Song implements Serializable {
     private String name;
@@ -25,12 +28,11 @@ public class Song implements Serializable {
         this.directory = directory;
         lastPlay = new Date();
         try {
-//            BufferedImage img = (BufferedImage) ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-            artWork = new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+            artWork = (new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
 
-        } catch (Exception ex) {
-            System.out.println("Image not found");
-
+        } catch (
+                IOException e1) {
+            e1.printStackTrace();
         }
     }
 

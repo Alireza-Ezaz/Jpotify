@@ -41,6 +41,12 @@ public class ShowPlayListMusic implements ActionListener {
         this.plPanel = plPanel;
     }
 
+    /**
+     * @author M.S.Haeri
+     * @version final
+     * This class shows playlist music with remove and add listener
+     */
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

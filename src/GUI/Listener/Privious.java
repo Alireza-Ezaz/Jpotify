@@ -1,7 +1,6 @@
 package GUI.Listener;
 
 import Logic.Player.MP3Player;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles previous button
+ */
 
 public class Privious implements ActionListener {
 

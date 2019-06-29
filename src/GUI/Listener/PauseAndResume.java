@@ -7,9 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles Pause and resume button
+ */
 
 public class PauseAndResume implements ActionListener {
     private JButton button;

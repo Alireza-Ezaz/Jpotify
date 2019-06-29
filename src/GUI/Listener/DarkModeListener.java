@@ -1,13 +1,16 @@
 package GUI.Listener;
 
-import javax.management.ObjectInstance;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles dark mode
+ */
 
 public class DarkModeListener implements ActionListener {
     private JFrame frame;

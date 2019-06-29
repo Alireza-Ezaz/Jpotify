@@ -7,9 +7,6 @@ import GUI.Listener.DarkModeListener;
 import GUI.Listener.NewPlaylistListener;
 import Logic.Entities.Library;
 import Logic.Entities.PlayList;
-import Logic.Entities.Song;
-import Logic.LoginPage.Login;
-import Logic.Player.MP3Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,15 +14,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static GUI.Listener.PlayMusicListener.getSlider;
 
+/**
+ * @author M.S.Haeri
+ * @version final
+ * This class handles GUI
+ */
 public class MainGraph {
-    private static JLabel stopWatch = new JLabel("0:0");
     private Library library;
     private JFrame myFrame;
     private ArrayList<Object> centerPanelArrayList;
@@ -37,13 +37,15 @@ public class MainGraph {
     private static JButton play = new JButton();
     private static JButton favorite = new JButton();
     private JButton search = new JButton();
+    private static JLabel remainingTime = new JLabel();
+    private static JLabel time = new JLabel();
 
-    public static JLabel getStopWatch() {
-        return stopWatch;
+    public static JLabel getTime() {
+        return time;
     }
 
-    public static JButton getFavorite() {
-        return favorite;
+    public static JLabel getRemainingTime() {
+        return remainingTime;
     }
 
     public static JButton getPlay() {
@@ -54,6 +56,15 @@ public class MainGraph {
         return pn;
     }
 
+    public static JButton getFavorite() {
+        return favorite;
+    }
+
+    /**
+     * This method create image icon without manual size
+     *
+     * @param path file directory
+     */
     private ImageIcon imageCreator(String path) {
         try {
             BufferedImage img = ImageIO.read(new File(path));
@@ -65,18 +76,23 @@ public class MainGraph {
         }
     }
 
+    /**
+     * @return Dimension
+     */
     private Dimension dimensionCreator(int width, int height) {
         Dimension dimension = new Dimension(width, height);
         return dimension;
     }
 
-
+    /**
+     * This method create east panel
+     */
     private void eastPanel() {
+        //Friend Activity column
         JPanel eastPanel = new JPanel(new FlowLayout());
         eastPanelArrayList.add(eastPanel);
         eastPanel.setPreferredSize(dimensionCreator(150, Toolkit.getDefaultToolkit().getScreenSize().height));
         eastPanel.setBackground(Color.lightGray);
-
         JLabel fActivity = new JLabel(" Friend Activity");
         fActivity.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 15));
         eastPanelArrayList.add(fActivity);
@@ -85,7 +101,11 @@ public class MainGraph {
         myFrame.add(eastPanel, BorderLayout.EAST);
     }
 
-
+    /**
+     * This method create north panel
+     *
+     * @param lib Library
+     */
     public void northPanel(Library lib) {
         try {
             myFrame.setIconImage(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\logo4.png")));
@@ -97,11 +117,13 @@ public class MainGraph {
         float[] floats = new float[3];
         JPanel menuBar = new JPanel(new FlowLayout());
         northPanelArrayList.add(menuBar);
-        Color.RGBtoHSB(200, 200, 200, floats);
+
+        Color.RGBtoHSB(200, 200, 201, floats);
         search.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        Color.RGBtoHSB(40, 40, 40, floats);
+        Color.RGBtoHSB(40, 40, 41, floats);
         search.setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
         northPanelArrayList.add(search);
+
         search.setPreferredSize(dimensionCreator(30, 30));
         try {
             search.setIcon(new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\search1.png")).getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
@@ -110,8 +132,6 @@ public class MainGraph {
                 IOException e1) {
             e1.printStackTrace();
         }
-
-        //menuBar.setPreferredSize(dimensionCreator(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 50));
 
         menuBar.add(search);
 
@@ -129,9 +149,9 @@ public class MainGraph {
 
         northPanelArrayList.add(add);
         menuBar.add(add);
-        Color.RGBtoHSB(200, 200, 200, floats);
+        Color.RGBtoHSB(200, 200, 199, floats);
         menuBar.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        Color.RGBtoHSB(40, 40, 40, floats);
+        Color.RGBtoHSB(40, 40, 39, floats);
         menuBar.setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
         JButton friendIp = new JButton();
         //friendIp.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 15));
@@ -148,11 +168,10 @@ public class MainGraph {
         }
         DefaultListModel ipList = new DefaultListModel();
         friendIp.addActionListener(new IpShower(ipList));
-        Color.RGBtoHSB(200, 200, 200, floats);
+        Color.RGBtoHSB(200, 201, 200, floats);
         friendIp.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        Color.RGBtoHSB(40, 40, 40, floats);
+        Color.RGBtoHSB(41, 40, 40, floats);
         friendIp.setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-
         menuBar.add(friendIp);
         JLabel profileIcon = new JLabel();
         northPanelArrayList.add(profileIcon);
@@ -163,62 +182,53 @@ public class MainGraph {
                 IOException e1) {
             e1.printStackTrace();
         }
-
-
         profileIcon.setPreferredSize(dimensionCreator(30, 30));
         JPanel user = new JPanel(new FlowLayout());
         northPanelArrayList.add(user);
         user.add(profileIcon);
         JLabel userName = new JLabel(Library.getUsername());
-        userName.setPreferredSize(
-
-                dimensionCreator(150, 30));
-        Color.RGBtoHSB(200, 200, 200, floats);
+        userName.setPreferredSize(dimensionCreator(150, 30));
+        Color.RGBtoHSB(199, 200, 200, floats);
         userName.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        Color.RGBtoHSB(40, 40, 40, floats);
+        Color.RGBtoHSB(39, 40, 40, floats);
         userName.setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        userName.setFont(new
-
-                Font("GothamBold", Font.ITALIC, 15));
+        userName.setFont(new Font("GothamBold", Font.ITALIC, 15));
         northPanelArrayList.add(userName);
         user.add(userName);
         Color.RGBtoHSB(200, 200, 200, floats);
         user.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        Color.RGBtoHSB(40, 40, 40, floats);
+        Color.RGBtoHSB(40, 41, 40, floats);
         user.setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
         mainPanel.add(user, BorderLayout.WEST);
 
         JCheckBox darkMode = new JCheckBox("Dark Mode", false);
-        darkMode.setFont(new
-
-                Font("GothamBold", Font.ROMAN_BASELINE, 14));
+        darkMode.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 14));
         northPanelArrayList.add(darkMode);
-        darkMode.addActionListener(new
-
-                DarkModeListener(myFrame, centerPanelArrayList, eastPanelArrayList, northPanelArrayList, southPanelArrayList, leftPanelArrayList));
-        darkMode.setPreferredSize(
-
-                dimensionCreator(150, 30));
-        Color.RGBtoHSB(200, 200, 200, floats);
+        darkMode.addActionListener(new DarkModeListener(myFrame, centerPanelArrayList, eastPanelArrayList, northPanelArrayList, southPanelArrayList, leftPanelArrayList));
+        darkMode.setPreferredSize(dimensionCreator(150, 30));
+        Color.RGBtoHSB(200, 199, 200, floats);
         darkMode.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
-        Color.RGBtoHSB(40, 40, 40, floats);
+        Color.RGBtoHSB(41, 41, 40, floats);
         darkMode.setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
         mainPanel.add(darkMode, BorderLayout.EAST);
         mainPanel.add(menuBar, BorderLayout.CENTER);
-
         myFrame.add(mainPanel, BorderLayout.NORTH);
     }
 
+    /**
+     * This method create south panel
+     * @throws InterruptedException
+     */
+
 
     public void southPanel() throws InterruptedException {
-
+        float[] floats = new float[3];
 
         //Player Panel in southpanel
         JPanel southPanel = new JPanel(new BorderLayout());
         JPanel playerPanel = new JPanel(new FlowLayout());
         southPanelArrayList.add(southPanel);
         southPanelArrayList.add(playerPanel);
-
 
         southPanelArrayList.add(play);
         play.addActionListener(new PauseAndResume(play));
@@ -249,15 +259,32 @@ public class MainGraph {
         playerPanel.add(pNext);
         playerPanel.setBackground(Color.lightGray);
         southPanel.add(playerPanel, BorderLayout.WEST);
-        //getStopWatch().setPreferredSize(dimensionCreator(60,30));
+        Color.RGBtoHSB(40, 40, 40, floats);
 
+        JPanel sliderPanel = new JPanel(new BorderLayout());
+        time.setPreferredSize(dimensionCreator(50,30));
+        remainingTime.setPreferredSize(dimensionCreator(50,30));
+        sliderPanel.add(time, BorderLayout.EAST);
+        time.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+        southPanelArrayList.add(time);
+        sliderPanel.add(getSlider(), BorderLayout.CENTER);
 
         southPanelArrayList.add(getSlider());
         getSlider().setBackground(Color.lightGray);
 
-        //southPanel.add(getStopWatch(),BorderLayout.CENTER);
-        southPanel.add(getSlider(), BorderLayout.CENTER);
-        JLabel remainingTime = new JLabel();
+
+        time.setBackground(Color.lightGray);
+        remainingTime.setBackground(Color.lightGray);
+        time.setFont(new Font("GothamBold", Font.ITALIC, 12));
+        remainingTime.setFont(new Font("GothamBold", Font.ITALIC, 12));
+        sliderPanel.add(remainingTime, BorderLayout.WEST);
+        sliderPanel.setBackground(Color.lightGray);
+        southPanelArrayList.add(remainingTime);
+        southPanelArrayList.add(sliderPanel);
+
+        southPanel.add(sliderPanel, BorderLayout.CENTER);
+
+        //southPanel.add(getSlider(), BorderLayout.CENTER);
         JSlider voloum = new JSlider();
         voloum.addChangeListener(new ChangeListener() {
             @Override
@@ -268,12 +295,10 @@ public class MainGraph {
                 Process pr;
                 try {
                     pr = rt.exec("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\nircmdc.exe" + " setsysvolume " + endVolume);
-                    //pr = rt.exec(nircmdFilePath + " mutesysvolume 0");
 
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                //
             }
         });
         southPanelArrayList.add(voloum);
@@ -284,6 +309,9 @@ public class MainGraph {
         myFrame.add(southPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * This method create left panel
+     */
     private void leftPanel(Library lib, JFrame frame) {
         float[] floats = new float[3];
         JPanel cp = new JPanel(new ModifiedFlowLayout());
@@ -319,14 +347,10 @@ public class MainGraph {
         artists.setPreferredSize(dimensionCreator(150, 30));
         playLists.setPreferredSize(dimensionCreator(150, 30));
 
-
         JPanel plPanel = new JPanel(new ModifiedFlowLayout());
         JScrollPane plPane = new JScrollPane(plPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         leftPanelArrayList.add(plPane);
-
-
-        //libraryList.setPreferredSize(dimensionCreator(150, 70));
-        plPane.setPreferredSize(dimensionCreator(150, 300));
+        plPane.setPreferredSize(dimensionCreator(150, 200));
 
         JLabel library = new JLabel("LIBRARY");
         library.setFont(new Font("GothamBold", Font.ITALIC, 16));
@@ -343,22 +367,19 @@ public class MainGraph {
 
         for (PlayList playList : lib.getPlayLists()) {
             JButton button = new JButton(playList.getName());
-            button.addActionListener(new ShowPlayListMusic(cp, lib, centerPanelArrayList, frame, sp, artworkP, musicName, artist, playList.getName(),plPanel));
+            button.addActionListener(new ShowPlayListMusic(cp, lib, centerPanelArrayList, frame, sp, artworkP, musicName, artist, playList.getName(), plPanel));
             button.setPreferredSize(new Dimension(150, 30));
             plPanel.add(button);
             Color.RGBtoHSB(40, 40, 40, floats);
             button.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
             button.setForeground(Color.lightGray);
-
         }
-
 
         leftPanel.add(library);
         leftPanel.add(music);
         leftPanel.add(album);
         leftPanel.add(artists);
         leftPanel.add(playLists);
-        //leftPanel.add(scrollPane);
         leftPanel.add(playlistListLabel);
         leftPanel.add(plPane);
 
@@ -376,7 +397,6 @@ public class MainGraph {
         artworkP.setPreferredSize(dimensionCreator(150, 150));
         leftPanel.add(artworkP);
 
-
         musicName.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 14));
         artist.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 14));
         leftPanelArrayList.add(musicName);
@@ -392,10 +412,8 @@ public class MainGraph {
         favorite.setBackground(Color.lightGray);
         leftPanel.add(favorite);
 
-
         cp.setBackground(Color.gray);
         centerPanelArrayList.add(cp);
-
 
         sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
 
@@ -448,39 +466,20 @@ public class MainGraph {
         southPanelArrayList = new ArrayList<>();
         leftPanelArrayList = new ArrayList<>();
 
-
-        //Left panel
         leftPanel(library, myFrame);
 
-
-        //East panel
         eastPanel();
 
-        //South panel
         southPanel();
 
-        //North panel
         northPanel(library);
 
         ///////////
-        //System.out.println("width: " + Toolkit.getDefaultToolkit().getScreenSize().width + "Height :" + Toolkit.getDefaultToolkit().getScreenSize().height);
         myFrame.setMinimumSize(dimensionCreator(1600, 1255));
-        myFrame.setMaximumSize(dimensionCreator(1440, 960));
-        //if (Toolkit.getDefaultToolkit().getScreenSize().width < 1500)
+        myFrame.setMaximumSize(dimensionCreator(1440, 1100));
         myFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         myFrame.setVisible(true);
 
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        Login login = new Login();
-        Library lib = new Library(login.getUserName());
-        if (Library.getUsername().equals("Guest"))
-            lib.saveLibrarySongs();
-        else
-            lib.loadSongs();
-        MainGraph mainGraph = new MainGraph(lib);
-
-        //System.out.println(lib);
-    }
 }
