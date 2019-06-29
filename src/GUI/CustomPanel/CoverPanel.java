@@ -1,11 +1,16 @@
 package GUI.CustomPanel;
 
 import Logic.Entities.Album;
+import Logic.Entities.Artist;
 import Logic.Entities.PlayList;
 import Logic.Entities.Song;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class CoverPanel extends JPanel {
     private String name;
@@ -27,7 +32,8 @@ public class CoverPanel extends JPanel {
         return label2;
     }
 
-    public CoverPanel(Song song){
+
+    public CoverPanel(Song song) {
         super(new FlowLayout());
         this.name = song.getName();
         this.artwork = song.getArtWork();
@@ -39,14 +45,21 @@ public class CoverPanel extends JPanel {
         button.setBackground(Color.lightGray);
         label1.setBackground(Color.lightGray);
         label2.setBackground(Color.lightGray);
-        label1.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,12));
-        label2.setFont(new Font("GothamBold",Font.ITALIC,12));
-        button.setPreferredSize(new Dimension(150,150));
-        label1.setPreferredSize(new Dimension(150,20));
-        label2.setPreferredSize(new Dimension(150,30));
+        label1.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label2.setFont(new Font("GothamBold", Font.ITALIC, 12));
+        button.setPreferredSize(new Dimension(150, 150));
+        label1.setPreferredSize(new Dimension(150, 20));
+        label2.setPreferredSize(new Dimension(150, 30));
+        label1.setForeground(Color.lightGray);
+        label2.setForeground(Color.lightGray);
+        float[] floats = new float[3];
+        Color.RGBtoHSB(40, 40, 40, floats);
+        setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+
 
     }
-    public CoverPanel(Album album){
+
+    public CoverPanel(Album album) {
         super(new FlowLayout());
         this.name = album.getName();
         this.artwork = album.getSongs().get(0).getArtWork();
@@ -58,16 +71,50 @@ public class CoverPanel extends JPanel {
         button.setBackground(Color.lightGray);
         label1.setBackground(Color.lightGray);
         label2.setBackground(Color.lightGray);
-        label1.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,12));
-        label2.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,12));
-        button.setPreferredSize(new Dimension(150,150));
-        label1.setPreferredSize(new Dimension(150,30));
-        label2.setPreferredSize(new Dimension(150,30));
+        label1.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label2.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label1.setForeground(Color.lightGray);
+        label2.setForeground(Color.lightGray);
+        button.setPreferredSize(new Dimension(150, 150));
+        label1.setPreferredSize(new Dimension(150, 30));
+        label2.setPreferredSize(new Dimension(150, 30));
+        float[] floats = new float[3];
+        Color.RGBtoHSB(40, 40, 40, floats);
+        setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+
 
     }
-    public CoverPanel(PlayList playList){
+
+    public CoverPanel(Artist artist) {
+        super(new FlowLayout());
+        this.name = artist.getName();
+        this.artwork = artist.getSongs().get(0).getArtWork();
+        this.artistName = artist.getSongs().get(0).getArtistName();
+        button = new JButton();
+        button.setIcon(artwork);
+        label1 = new JLabel("Artist :");
+        label2 = new JLabel(artistName);
+        button.setBackground(Color.lightGray);
+        label1.setBackground(Color.lightGray);
+        label2.setBackground(Color.lightGray);
+        label1.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label2.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label1.setForeground(Color.lightGray);
+        label2.setForeground(Color.lightGray);
+        button.setPreferredSize(new Dimension(150, 150));
+        label1.setPreferredSize(new Dimension(150, 30));
+        label2.setPreferredSize(new Dimension(150, 30));
+        float[] floats = new float[3];
+        Color.RGBtoHSB(40, 40, 40, floats);
+        setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+
+
+    }
+
+    public CoverPanel(PlayList playList) {
         super(new FlowLayout());
         this.name = playList.getName();
+        System.out.println(playList.getName());
         this.artwork = playList.getImageIcon();
         button = new JButton();
         button.setIcon(artwork);
@@ -76,11 +123,75 @@ public class CoverPanel extends JPanel {
         button.setBackground(Color.lightGray);
         label1.setBackground(Color.lightGray);
         label2.setBackground(Color.lightGray);
-        label1.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,12));
-        label2.setFont(new Font("GothamBold",Font.ROMAN_BASELINE,12));
-        button.setPreferredSize(new Dimension(150,150));
-        label1.setPreferredSize(new Dimension(150,30));
-        label2.setPreferredSize(new Dimension(150,30));
+        label1.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label2.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label1.setForeground(Color.lightGray);
+        label2.setForeground(Color.lightGray);
+        button.setPreferredSize(new Dimension(150, 150));
+        label1.setPreferredSize(new Dimension(150, 30));
+        label2.setPreferredSize(new Dimension(150, 30));
+        float[] floats = new float[3];
+        Color.RGBtoHSB(40, 40, 40, floats);
+        setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+
+    }
+    public CoverPanel() {
+        super(new FlowLayout());
+        this.name = "New Music";
+        //this.artwork = playList.getImageIcon();
+        button = new JButton();
+        button.setFont(new Font("GothamBold", Font.ITALIC, 120));
+        button.setIcon(artwork);
+        label1 = new JLabel("Add");
+        label2 = new JLabel(name);
+        button.setBackground(Color.lightGray);
+        label1.setBackground(Color.lightGray);
+        label2.setBackground(Color.lightGray);
+        try {
+            button.setIcon(new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\plus.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        label1.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label2.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label1.setForeground(Color.lightGray);
+        label2.setForeground(Color.lightGray);
+        button.setPreferredSize(new Dimension(150, 150));
+        label1.setPreferredSize(new Dimension(150, 30));
+        label2.setPreferredSize(new Dimension(150, 30));
+        float[] floats = new float[3];
+        Color.RGBtoHSB(40, 40, 40, floats);
+        setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+
+    }
+    public CoverPanel(String remove) {
+        super(new FlowLayout());
+        this.name = "";
+        //this.artwork = playList.getImageIcon();
+        button = new JButton();
+        button.setFont(new Font("GothamBold", Font.ITALIC, 120));
+        button.setIcon(artwork);
+        label1 = new JLabel("Remove");
+        label2 = new JLabel(name);
+        button.setBackground(Color.lightGray);
+        label1.setBackground(Color.lightGray);
+        label2.setBackground(Color.lightGray);
+        try {
+            button.setIcon(new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\remove.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH)));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        label1.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label2.setFont(new Font("GothamBold", Font.ROMAN_BASELINE, 12));
+        label1.setForeground(Color.lightGray);
+        label2.setForeground(Color.lightGray);
+        button.setPreferredSize(new Dimension(150, 150));
+        label1.setPreferredSize(new Dimension(150, 30));
+        label2.setPreferredSize(new Dimension(150, 30));
+        float[] floats = new float[3];
+        Color.RGBtoHSB(40, 40, 40, floats);
+        setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+
     }
 
 }

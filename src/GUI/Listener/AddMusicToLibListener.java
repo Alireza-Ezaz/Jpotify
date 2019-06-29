@@ -10,14 +10,14 @@ import java.io.File;
 
 public class AddMusicToLibListener implements ActionListener {
     private JFileChooser chooser;
-    private Library library;
     private JFrame fileChooserFrame;
+    private Library library;
+
 
     public AddMusicToLibListener(Library library) {
         chooser = new JFileChooser();
         fileChooserFrame = new JFrame();
         this.library = library;
-
 
     }
 
@@ -26,6 +26,7 @@ public class AddMusicToLibListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         fileChooserFrame.add(chooser);
+        chooser.setBackground(Color.gray);
         File file = null;
         int returnValue = chooser.showOpenDialog(fileChooserFrame);
         if (returnValue == JFileChooser.APPROVE_OPTION)
@@ -42,6 +43,7 @@ public class AddMusicToLibListener implements ActionListener {
 
 
         fileChooserFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
 
     }
 }

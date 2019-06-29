@@ -11,25 +11,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import static GUI.Listener.ShowMusicListener.getA;
+import static GUI.Listener.ShowMusicListener.setA;
+import static GUI.MainGraph.getPn;
+
 public class ShowAlbumsMusicListener implements ActionListener {
 
     private JPanel centerPanel;
     private Library library;
     private ArrayList<Object> centerPanelArray;
     private JFrame frame;
-    private JPanel musics;
+    private JScrollPane sp;
     private JButton artwork;
     private JLabel artworkMusicName;
     private JLabel artworkArtisiName;
     private String albumName;
 
 
-    public ShowAlbumsMusicListener(JPanel centerPanel, Library library, ArrayList<Object> centerPanelArray, JFrame frame, JPanel musics, JButton artwork, JLabel artworkMusicName, JLabel artworkArtisiName, String albumName) {
+    public ShowAlbumsMusicListener(JPanel centerPanel, Library library, ArrayList<Object> centerPanelArray, JFrame frame, JScrollPane sp, JButton artwork, JLabel artworkMusicName, JLabel artworkArtisiName, String albumName) {
         this.centerPanel = centerPanel;
         this.library = library;
         this.centerPanelArray = centerPanelArray;
         this.frame = frame;
-        this.musics = musics;
+        this.sp =sp;
         this.artwork = artwork;
         this.artworkMusicName = artworkMusicName;
         this.artworkArtisiName = artworkArtisiName;
@@ -39,8 +43,17 @@ public class ShowAlbumsMusicListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        centerPanel.removeAll();
+        if (getA() == 0) {
+//            System.out.println("meeeeeeeeeeeeeeeeeeeeee");
+//            sp = new JScrollPane(centerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//            sp.getViewport().setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 310, 730));
+//            SwingUtilities.updateComponentTreeUI(frame);
+//            setA(getA()+1);
+            frame.remove(getPn());
+        }
+
         float[] floats = new float[3];
-        musics.removeAll();
         SwingUtilities.updateComponentTreeUI(frame);
         frame.setVisible(true);
 
@@ -58,12 +71,10 @@ public class ShowAlbumsMusicListener implements ActionListener {
                         ((JComponent) object).setForeground(Color.lightGray);
                     }
                     Color.RGBtoHSB(24, 24, 24, floats);
-                    musics.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
                     centerPanel.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
 
 
                 } else {
-                    musics.setBackground(Color.gray);
                     centerPanel.setBackground(Color.gray);
 
                 }
@@ -72,7 +83,6 @@ public class ShowAlbumsMusicListener implements ActionListener {
         }
 
         library.loadSongs();
-        musics.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 730));
         for (Album album : library.getAlbums()) {
             if (albumName.equals(album.getName())) {
                 for (Song song : album.getSongs()) {
@@ -82,15 +92,15 @@ public class ShowAlbumsMusicListener implements ActionListener {
                     musicCoverPanel.getButton().addActionListener(new PlayMusicListener(song, library, artwork, artworkMusicName, artworkArtisiName, frame,album.getSongs()));
                     musicCoverPanel.add(musicCoverPanel.getLabel1());
                     musicCoverPanel.add(musicCoverPanel.getLabel2());
-                    musics.add(musicCoverPanel);
+                    centerPanel.add(musicCoverPanel);
                 }
             }
         }
 
 
-        centerPanel.add(musics);
-        centerPanelArray.add(musics);
+        centerPanelArray.add(centerPanel);
         SwingUtilities.updateComponentTreeUI(frame);
+        frame.add(sp, BorderLayout.CENTER);
         frame.setVisible(true);
         library.saveLibrarySongs();
     }
