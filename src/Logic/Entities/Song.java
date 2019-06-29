@@ -2,8 +2,10 @@ package Logic.Entities;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,14 +21,12 @@ public class Song implements Serializable {
     private ImageIcon artWork = null;
     private Date lastPlay;
 
-
     public Song(String directory) {
         this.directory = directory;
         lastPlay = new Date();
         try {
-            BufferedImage img = ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png"));
-            BufferedImage fimg = new BufferedImage(30, 30, img.getType());
-            artWork = new ImageIcon(img);
+//            BufferedImage img = (BufferedImage) ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            artWork = new ImageIcon(ImageIO.read(new File("C:\\Users\\Mohammad Sadra\\IdeaProjects\\FP AP\\src\\artwork.png")).getScaledInstance(150, 150, Image.SCALE_SMOOTH));
 
         } catch (Exception ex) {
             System.out.println("Image not found");

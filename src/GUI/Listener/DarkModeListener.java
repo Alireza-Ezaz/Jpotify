@@ -32,6 +32,8 @@ public class DarkModeListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JCheckBox darkMode = ((JCheckBox) e.getSource());
         if (darkMode.isSelected()) {
+            Color.RGBtoHSB(18, 18, 18, floats);
+            frame.setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
             for (Object object : eastPanelArrayList) {
                 if (object instanceof JLabel) {
 
@@ -70,10 +72,15 @@ public class DarkModeListener implements ActionListener {
                 ((JComponent) object).setForeground(Color.lightGray);
             }
             for (Object object : centerPanelArrayList) {
-                if (object instanceof JLabel) {
-
-                } else {
+                {
                     Color.RGBtoHSB(24, 24, 24, floats);
+                    ((JComponent) object).setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+                }
+                ((JComponent) object).setForeground(Color.lightGray);
+            }
+            for (Object object : northPanelArrayList) {
+                {
+                    Color.RGBtoHSB(14, 14, 20, floats);
                     ((JComponent) object).setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
                 }
                 ((JComponent) object).setForeground(Color.lightGray);
@@ -81,6 +88,7 @@ public class DarkModeListener implements ActionListener {
 
 
         } else {
+            frame.setBackground(Color.lightGray);
             for (Object object : eastPanelArrayList) {
                 ((JComponent) object).setBackground(Color.lightGray);
                 ((JComponent) object).setForeground(Color.black);
@@ -105,6 +113,12 @@ public class DarkModeListener implements ActionListener {
             for (Object object : centerPanelArrayList) {
                 ((JComponent) object).setBackground(Color.gray);
                 ((JComponent) object).setForeground(Color.black);
+            }
+            for (Object object : northPanelArrayList) {
+                Color.RGBtoHSB(200, 200, 200, floats);
+                ((JComponent) object).setBackground(Color.getHSBColor(floats[0], floats[1], floats[2]));
+                Color.RGBtoHSB(40, 40, 40, floats);
+                ((JComponent) object).setForeground(Color.getHSBColor(floats[0], floats[1], floats[2]));
             }
 
             frame.setBackground(Color.lightGray);
